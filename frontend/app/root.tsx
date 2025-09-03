@@ -2,8 +2,6 @@ import {
   isRouteErrorResponse,
   Links,
   Meta,
-  NavLink,
-  Link,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -44,17 +42,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return (
-    <>
-      <div className="w-screen bg-white items-center py-3 text-black text-xl font-bold">
-        <NavLink to="/" className="mx-4">
-          Home
-        </NavLink>
-        <NavLink to="/orders">Orders</NavLink>
-      </div>
-      <Outlet />
-    </>
-  ); // component placeholder for components representing pages (routes)
+  return <Outlet />; // component placeholder for components representing pages (routes)
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -74,11 +62,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
+    <main id="error">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
+        <pre>
           <code>{stack}</code>
         </pre>
       )}

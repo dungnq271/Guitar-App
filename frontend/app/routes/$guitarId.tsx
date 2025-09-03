@@ -1,6 +1,12 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/guitar";
 import { fetchGuitars, type Guitar } from "../utils/apis";
+import { useState } from "react";
+import "./$guitarId.css";
+
+interface ModalProps {
+  isShown: boolean;
+}
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
   const guitars = await fetchGuitars();
@@ -12,38 +18,50 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
 }
 
 export default function Guitars({ loaderData }: Route.ComponentProps) {
+  const [isAddCart, setAddCart] = useState<boolean>(false);
   const guitar: Guitar = loaderData;
 
   return (
-    <div className="relative min-h-[100vh] flex items-center bg-black text-white p-5">
-      <div className="relative z-10 w-[60%] bg-gray-900/60 backdrop-blur-md rounded-2xl p-8 border border-gray-800/50 shadow-xl">
-        <Link
-          to="/"
-          className="inline-block mb-4 text-emerald-400 hover:text-emerald-300"
-        >
+    <div id="description-panel">
+      <div id="details-container">
+        <Link id="back" to="/">
           &larr; Back to all guitars
         </Link>
-        <h1 className="text-3xl font-bold mb-4">{guitar.name}</h1>
-        <p className="text-gray-300 mb-6">{guitar.description}</p>
-        <div className="flex items-center justify-between">
-          <div className="text-2xl font-bold text-emerald-400">
-            ${guitar.price}
-          </div>
-          <button className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2 rounded-lg transition-colors">
+        <h1 id="name">{guitar.name}</h1>
+        <p id="description">{guitar.description}</p>
+        <div id="price-div">
+          <div id="price">${guitar.price}</div>
+          <button
+            onClick={() => {
+              setAddCart(true);
+              setTimeout(() => setAddCart(false), 3000);
+            }}
+            id="cart-btn"
+          >
             Add to Cart
           </button>
         </div>
       </div>
 
-      <div className="absolute top-0 right-0 w-[55%] h-full z-0">
-        <div className="w-full h-full overflow-hidden rounded-2xl border-4 border-gray-800 shadow-2xl">
-          <img
-            src={guitar.image}
-            alt={guitar.name}
-            className="w-full h-full object-cover guitar-image"
-          />
+      <div id="full-img-panel">
+        <div id="full-img-div">
+          <img id="full-img" src={guitar.image} alt={guitar.name} />
         </div>
       </div>
+      <Modal isShown={isAddCart} />
     </div>
+  );
+}
+
+function Modal({ isShown }: ModalProps) {
+  return (
+    isShown && (
+      <div id="modal">
+        <div id="modal-body">
+          <img src="/app/images/tick_icon.svg" width="1" height="1" />
+          <p>Item added</p>
+        </div>
+      </div>
+    )
   );
 }

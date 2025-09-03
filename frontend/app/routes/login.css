@@ -1,0 +1,88 @@
+#login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#modal {
+  background-color: #fff;
+  padding: 1rem;
+  height: 400px;
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 10px;
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+  justify-self: start;
+  gap: 1rem;
+}
+
+#login-page div p {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+#login-form div > input {
+  font-size: 1rem;
+  padding-left: 0.5rem;
+}
+
+#login-form div > input,
+button[type="submit"] {
+  border-radius: 6px;
+  height: 40px;
+}
+
+#password > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+#password a {
+  color: blue;
+}
+
+#username input,
+#password input,
+button[type="submit"] {
+  width: 400px;
+}
+
+button[type="submit"] {
+  background-color: var(--color-green-600);
+  font-size: 1rem;
+  opacity: 0.9;
+  border: none;
+}
+
+button[type="submit"]:hover {
+  opacity: 1;
+}
+
+#separation {
+  border-bottom: 1px solid #fff;
+  text-align: center;
+  height: 10px;
+  width: 400px;
+}
+
+span {
+  background: #fff;
+  padding: 0 5px;
+}
+
+#with-google {
+  background-color: #f7f7f7;
+}
+
+#login-form input {
+  background-color: transparent;
+}

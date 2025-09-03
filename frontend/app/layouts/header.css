@@ -1,0 +1,29 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--color-gray-500);
+}
+
+#left-header {
+  grid-area: alias-lh;
+  display: flex;
+  align-items: center;
+}
+
+#right-header {
+  grid-area: alias-rh;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+#signup p {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-gray-500);
+}
+
+#signup:hover {
+  opacity: 0.8;
+}
