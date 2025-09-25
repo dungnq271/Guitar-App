@@ -21,8 +21,6 @@ export async function clientAction({ params }: Route.ClientActionArgs) {}
 export default function Guitars({ loaderData }: Route.ComponentProps) {
   const { guitars, userId } = loaderData;
 
-  console.log(userId);
-
   return (
     <div id="index-page">
       <main>

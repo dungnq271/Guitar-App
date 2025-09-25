@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: "postgres:17.2"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "leonard"
+      POSTGRES_PASSWORD: "Abc@123"
+      POSTGRES_DB: "ecm-postgres"
+

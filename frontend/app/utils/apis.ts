@@ -29,3 +29,17 @@ export async function getUserByUsername(data: string) {
   }
   return response.json();
 }
+
+export async function createUser(data: string) {
+  const response = await fetch("http://localhost:3000/user/createUser", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: data,
+  });
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+}

@@ -21,7 +21,7 @@ export default function Header({ isLogined }: HeaderProps) {
           <NavLink id="login" to="/login">
             <p>Sign in</p>
           </NavLink>
-          <NavLink id="signup" to="/signup">
+          <NavLink id="register" to="/register">
             <p>Sign up</p>
           </NavLink>
         </div>

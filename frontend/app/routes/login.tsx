@@ -5,8 +5,8 @@ import "./login.css";
 
 export async function clientAction({ params, request }: Route.ActionArgs) {
   const formData = await request.formData();
-  const updates = Object.fromEntries(formData);
-  const response = await getUserByUsername(JSON.stringify(updates));
+  const data = Object.fromEntries(formData);
+  const response = await getUserByUsername(JSON.stringify(data));
   // TODO: implement try-catch in case user id does not exist
   try {
     return redirect(`/${response.id}`);
@@ -19,10 +19,13 @@ export default function SignInPage() {
   return (
     <div id="login-page">
       <div id="modal">
+        <div id="title">
+          <h1>Sign in</h1>
+        </div>
         <Form id="login-form" method="post">
           <div id="username">
             <p>Username or email address</p>
-            <input aria-label="First name" name="username" />
+            <input name="username" />
           </div>
           <div id="password">
             <div>
@@ -41,6 +44,14 @@ export default function SignInPage() {
             Continue with Google
           </button>
         </Form>
+        <div id="create-account">
+          <p>
+            New?{" "}
+            <Link id="to_register" to="/register">
+              Create an account
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
