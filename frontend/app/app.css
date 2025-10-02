@@ -71,8 +71,8 @@ pre {
   grid-template-rows: 70px auto;
   grid-template-columns: 90px auto;
   grid-template-areas:
-    "alias-header alias-header"
-    "alias-inner-grid alias-inner-grid";
+    "alias-header alias-header alias-header"
+    "alias-nav alias-inner-grid alias-inner-grid";
 }
 
 header {

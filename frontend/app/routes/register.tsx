@@ -1,16 +1,16 @@
 import { Form, Link, redirect } from "react-router";
 import type { Route } from "./+types/login";
-import { createUser } from "~/utils/apis";
+import { register } from "~/utils/apis";
 import "./register.css";
 
 export async function clientAction({ params, request }: Route.ActionArgs) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const response = await createUser(JSON.stringify(data));
   try {
-    return redirect(`/${response.id}`);
+    const response = await register(data);
+    return redirect(`/${response.data.id}`);
   } catch (err) {
-    console.log(err);
+    return redirect(`/register`);
   }
 }
 
@@ -23,9 +23,23 @@ export default function RegisterPage() {
             <h1>Create an account</h1>
           </div>
           <Form id="register-form" method="post">
+            <div id="name">
+              <div id="first-name">
+                <p>First name</p>
+                <input name="firstName" />
+              </div>
+              <div id="last-name">
+                <p>Last name</p>
+                <input name="lastName" />
+              </div>
+            </div>
             <div id="username">
-              <p>Username or email address</p>
+              <p>Username</p>
               <input name="username" />
+            </div>
+            <div id="email">
+              <p>Email address</p>
+              <input name="email" />
             </div>
             {/* TODO: Implement password validation */}
             <div id="password">

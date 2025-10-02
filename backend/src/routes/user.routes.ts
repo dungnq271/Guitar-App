@@ -1,18 +1,19 @@
 import { Router } from "express";
-import { UserController } from "../controller/UserController";
 import passport = require("passport");
+import { UserController } from "../controller/UserController";
+import { validateRegisterData } from "../middlewares/validateUser";
 
-const router = Router();
+const userRouter = Router();
 
-router.get("/users", UserController.getUsers);
-router.post("/register", UserController.register);
-router.post("/login", UserController.register);
-router.post("/update/:id", UserController.updateUser);
-router.post("/delete/:id", UserController.deleteUser);
-router.get(
+userRouter.get("/users", UserController.getUsers);
+userRouter.post("/register", validateRegisterData, UserController.register);
+userRouter.post("/login", UserController.login);
+userRouter.post("/update/:id", UserController.updateUser);
+userRouter.post("/delete/:id", UserController.deleteUser);
+userRouter.get(
   "/protected",
   passport.authenticate("jwt", { session: false }),
   UserController.protected,
 );
 
-export { router as userRouter };
+export default userRouter;

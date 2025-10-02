@@ -8,7 +8,6 @@ import {
 } from "react-router";
 import type { Route } from "./+types/index";
 import { fetchGuitars } from "../utils/apis";
-import type { Guitar } from "~/utils/models";
 import "./index.css";
 
 export async function clientLoader({ params }: Route.LoaderArgs) {

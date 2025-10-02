@@ -17,6 +17,12 @@ export class User {
   id: string;
 
   @Column({ nullable: false })
+  firstName: string;
+
+  @Column({ nullable: false })
+  lastName: string;
+
+  @Column({ nullable: false })
   username: string;
 
   @Column({ nullable: false })
@@ -41,6 +47,6 @@ export class User {
   @Column()
   profilePicUrl: string;
 
-  @Column()
+  @UpdateDateColumn()
   profilePicUpdatedAt: Date;
 }

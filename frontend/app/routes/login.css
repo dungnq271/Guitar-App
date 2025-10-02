@@ -59,7 +59,7 @@ button[type="submit"] {
   color: blue;
 }
 
-#username input,
+#email input,
 #password input,
 button[type="submit"] {
   width: 400px;

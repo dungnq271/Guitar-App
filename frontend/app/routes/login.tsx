@@ -1,17 +1,17 @@
 import { Form, Link, redirect } from "react-router";
 import type { Route } from "./+types/login";
-import { getUserByUsername } from "~/utils/apis";
+import { login } from "~/utils/apis";
 import "./login.css";
 
 export async function clientAction({ params, request }: Route.ActionArgs) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const response = await getUserByUsername(JSON.stringify(data));
-  // TODO: implement try-catch in case user id does not exist
   try {
-    return redirect(`/${response.id}`);
+    const response = await login(data);
+    console.log(response);
+    return response;
   } catch (err) {
-    console.log(err);
+    return redirect(`/login`);
   }
 }
 
@@ -23,9 +23,9 @@ export default function SignInPage() {
           <h1>Sign in</h1>
         </div>
         <Form id="login-form" method="post">
-          <div id="username">
+          <div id="email">
             <p>Username or email address</p>
-            <input name="username" />
+            <input name="email" />
           </div>
           <div id="password">
             <div>

@@ -4,14 +4,15 @@ import { Request, Response } from "express";
 import "reflect-metadata";
 import path = require("path");
 import cors = require("cors");
-const passport = require('passport');
+const passport = require("passport");
 
 import config from "./config/config";
-import { userRouter } from "./routes/user.routes";
+import userRouter from "./routes/user.routes";
 import { guitarRouter } from "./routes/guitar.routes";
+import { errorHandler } from "./middlewares/errorHandler";
 
 // Pass the global passport object into the configuration function
-require('./config/passport')(passport);
+require("./config/passport")(passport);
 
 const app = express();
 
@@ -19,8 +20,8 @@ const app = express();
 app.use(passport.initialize());
 app.use(cors());
 app.use(express.json());
-// app.use(errorHandler);
-app.use(express.static(path.join(__dirname, "/images"))); // Serve images in directory images/
+app.use(errorHandler);
+app.use(express.static(path.join(__dirname, "..", "src", "/images"))); // Serve images in directory images/
 
 app.use("/auth", userRouter);
 app.use("/guitar", guitarRouter);

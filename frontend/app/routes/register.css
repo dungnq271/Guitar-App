@@ -39,6 +39,15 @@
   gap: 1rem;
 }
 
+#register-form #name {
+  display: flex;
+  justify-content: space-between;
+}
+
+#register-form #name input {
+  width: 200px;
+}
+
 #register-form div p {
   font-weight: 600;
   margin-bottom: 8px;
@@ -60,10 +69,9 @@ button[type="submit"] {
   justify-content: space-between;
 }
 
-#username input,
-#password input,
+#register-form div > input,
 button[type="submit"] {
-  width: 400px;
+  width: 420px;
 }
 
 button[type="submit"] {
