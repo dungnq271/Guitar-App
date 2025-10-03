@@ -31,7 +31,8 @@ a {
 }
 
 body {
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+  font-family:
+    Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -117,5 +118,14 @@ nav {
 
   #navbar {
     justify-self: start;
+  }
+
+  nav > * {
+    padding-left: 2.5rem;
+  }
+
+  #home,
+  #orders {
+    background-position: 0.625rem 0.25rem;
   }
 }

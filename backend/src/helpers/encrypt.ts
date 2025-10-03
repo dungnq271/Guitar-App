@@ -27,7 +27,7 @@ export class encrypt {
     });
 
     return {
-      token: "Bearer " + signedToken,
+      token: signedToken,
       expires: expiresIn,
     };
   }

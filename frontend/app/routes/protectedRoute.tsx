@@ -4,6 +4,7 @@ import { useAuth } from "~/provider/auth/authProvider";
 export default function ProtectedRoute() {
   const { token } = useAuth();
 
+  // TODO: check if token expires
   // Check if the user is authenticated
   if (!token) {
     // If not authenticated, redirect to the login page

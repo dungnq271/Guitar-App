@@ -2,12 +2,12 @@ import axios from "axios";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 interface AuthContextType {
-  token: string;
-  setToken: (token: string) => void;
+  token: string | null;
+  setToken: (token?: string) => void;
 }
 
 const initialContextValues = {
-  token: "",
+  token: null,
   setToken: () => null,
 };
 
@@ -19,11 +19,11 @@ interface Props {
 
 const AuthProvider = ({ children }: Props) => {
   // State to hold the authentication token
-  const [token, setToken_] = useState(localStorage.getItem("token") || "");
+  const [token, setToken_] = useState<string>(localStorage.getItem("token"));
 
   // Function to set the authentication token
-  const setToken = (newToken: string) => {
-    setToken_(newToken);
+  const setToken = (token?: string) => {
+    setToken_(token);
   };
 
   useEffect(() => {

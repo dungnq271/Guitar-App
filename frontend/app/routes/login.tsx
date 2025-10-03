@@ -1,21 +1,47 @@
-import { Form, Link, redirect } from "react-router";
+import { Form, Link, redirect, useNavigate } from "react-router";
 import type { Route } from "./+types/login";
 import { login } from "~/utils/apis";
 import "./login.css";
+import { useAuth } from "~/provider/auth/authProvider";
 
-export async function clientAction({ params, request }: Route.ActionArgs) {
+export async function clientAction({ request }: Route.ActionArgs) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   try {
     const response = await login(data);
-    console.log(response);
     return response;
   } catch (err) {
     return redirect(`/login`);
   }
 }
 
-export default function SignInPage() {
+export default function SignInPage({ actionData }: Route.ComponentProps) {
+  const { token, setToken } = useAuth();
+  const navigate = useNavigate();
+
+  if (actionData?.data.token && actionData?.data.token !== token) {
+    console.log(actionData?.data);
+    setToken(actionData?.data.token);
+    navigate("/", { replace: true });
+  }
+
+  /* async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  *   e.preventDefault();
+  
+  *   const form = new FormData(e.target as HTMLFormElement);
+  *   const parsedData = Object.fromEntries(form.entries());
+  
+  *   try {
+  *     const response = await login(parsedData);
+  *     if (response.data.token) {
+  *       setToken(response.data.token);
+  *       navigate("/", { replace: true });
+  *     }
+  *   } catch (err) {
+  *     return redirect(`/login`);
+  *   }
+  * } */
+
   return (
     <div id="login-page">
       <div id="modal">

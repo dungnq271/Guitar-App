@@ -1,20 +1,26 @@
-import { NavLink } from "react-router";
+import { NavLink, redirect } from "react-router";
 import "./header.css";
+import { useAuth } from "~/provider/auth/authProvider";
 
-interface HeaderProps {
-  isLogined: boolean;
-}
+export default function Header() {
+  const { token, setToken } = useAuth();
 
-export default function Header({ isLogined }: HeaderProps) {
+  function handleSignOut() {
+    setToken();
+    redirect("/login");
+  }
+
   return (
     <header>
       <div id="left-header">
         <h2>LOGO</h2>
       </div>
-      {isLogined ? (
+      {token ? (
         <div>
-          <p>Logined</p>
-          <NavLink to="/">Sign out</NavLink>
+          <p>Profile</p>
+          <NavLink to="/" onClick={handleSignOut}>
+            Sign out
+          </NavLink>
         </div>
       ) : (
         <div id="right-header">

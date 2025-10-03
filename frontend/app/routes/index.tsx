@@ -1,11 +1,4 @@
-import {
-  Form,
-  Link,
-  redirect,
-  useFetcher,
-  useNavigate,
-  useNavigation,
-} from "react-router";
+import { Link } from "react-router";
 import type { Route } from "./+types/index";
 import { fetchGuitars } from "../utils/apis";
 import "./index.css";
@@ -15,10 +8,8 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
   return { guitars, userId: params.userId };
 }
 
-export async function clientAction({ params }: Route.ClientActionArgs) {}
-
 export default function Guitars({ loaderData }: Route.ComponentProps) {
-  const { guitars, userId } = loaderData;
+  const { guitars } = loaderData;
 
   return (
     <div id="index-page">
