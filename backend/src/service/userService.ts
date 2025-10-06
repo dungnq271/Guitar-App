@@ -1,7 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { Repository } from "typeorm";
 import { User } from "../entity/User";
-import { encrypt } from "../helpers/encrypt";
+import { checkPassword, hashPassword } from "../lib/password";
+import { setFingerprintCookieAndSignJwt } from "../lib/setFingerprintCookieAndSignJwt";
+import { uuidv4 } from "../lib/auth";
+const crypto = require("crypto");
 import * as cache from "memory-cache";
 
 export class UserService {
@@ -13,22 +16,40 @@ export class UserService {
     };
   }
 
-  async register(req: Request) {
+  async register(req: Request, res: Response) {
     const { firstName, lastName, username, email, password } = req.body;
-    const encryptedPassword = await encrypt.encryptPassword(password);
+
+    const refreshToken = uuidv4();
+
     const user = new User();
     user.firstName = firstName;
     user.lastName = lastName;
     user.username = username;
     user.email = email;
-    user.password = encryptedPassword;
+    user.password = await hashPassword(password);
+    user.refreshToken = refreshToken;
+    user.refreshTokenExpiresAt = new Date(Date.now() + 1000 * 60 * 60 * 1); // 1 hour
     user.profilePicUrl = "https://localhost:3000/my-pic.png";
 
-    await this.userRepository.save(user);
+    // Generate a random string that will constitute the fingerprint for this user
+    const fingerprint = crypto.randomBytes(50).toString("hex");
 
-    const token = encrypt.issueJWT(user);
+    // Add the fingerprint in a hardened cookie to prevent Token Sidejacking
+    // https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html#token-sidejacking
+    const jwt = setFingerprintCookieAndSignJwt(fingerprint, res, user);
 
-    return { message: "User created successfully", token, user };
+    try {
+      await this.userRepository.save(user);
+    } catch (err) {
+      console.log("/auth/register endpoint error", err);
+      return { message: "Error signing up" };
+    }
+
+    return {
+      message: "User created successfully",
+      jwt,
+      refreshToken: refreshToken,
+    };
   }
 
   async login(req: Request) {

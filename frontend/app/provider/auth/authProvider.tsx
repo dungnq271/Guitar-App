@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { setJwtToken, setRefreshToken } from "~/lib/auth";
 
 interface AuthContextType {
   token: string | null;
@@ -29,10 +30,10 @@ const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      localStorage.setItem("token", token);
+      setJwtToken(token);
     } else {
       delete axios.defaults.headers.common["Authorization"];
-      localStorage.removeItem("token");
+      setJwtToken("");
     }
   }, [token]);
 

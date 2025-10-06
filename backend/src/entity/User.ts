@@ -44,6 +44,12 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column({ nullable: false })
+  refreshToken: string;
+
+  @Column({ nullable: false })
+  refreshTokenExpiresAt: Date;
+
   @Column()
   profilePicUrl: string;
 
