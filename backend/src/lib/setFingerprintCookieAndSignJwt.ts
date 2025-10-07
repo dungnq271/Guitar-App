@@ -1,4 +1,4 @@
-import { generateJWT, sha256 } from "./jwt";
+import { generateJwt, sha256 } from "./jwt";
 import { serialize } from "cookie";
 import { Response } from "express";
 import { User } from "../entity/User";
@@ -18,16 +18,18 @@ export function setFingerprintCookieAndSignJwt(
       path: "/",
       maxAge: FINGERPRINT_COOKIE_MAX_AGE,
       httpOnly: true,
+      // https://stackoverflow.com/questions/59990864/what-is-the-difference-between-samesite-lax-and-samesite-strict
+      sameSite: "strict",
       secure: config.nodeEnv === "production",
     }),
   );
 
-  return generateJWT({
+  return generateJwt({
     allowedRoles: ["user"],
     defaultRole: "user",
     expiresIn: "5m",
     otherClaims: {
-      sub: String(user.id),
+      "X-User-Id": String(user.id),
       "X-User-Fingerprint": sha256(fingerprint),
     },
   });

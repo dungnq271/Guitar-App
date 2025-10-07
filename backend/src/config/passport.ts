@@ -12,6 +12,7 @@ const pathToKey = path.join(__dirname, "..", "..", "id_rsa_pub.pem");
 // The verifying public key
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
 
+// TODO: replace to use HS256 algoritm
 // At a minimum, you must pass the `jwtFromRequest` and `secretOrKey` properties
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

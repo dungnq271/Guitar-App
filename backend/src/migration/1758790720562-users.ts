@@ -2,8 +2,8 @@ import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class Users1758790720562 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-		` 
+    (await queryRunner.query(
+      ` 
           --Table Definition
           CREATE TABLE "users"  (
             "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
@@ -15,14 +15,16 @@ export class Users1758790720562 implements MigrationInterface {
             "role"  character varying NOT NULL DEFAULT 'user',
             "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
             "updatedAt" TIMESTAMP NOT NULL DEFAULT now(),
+            "refreshToken" character varying NOT NULL,
+            "refreshTokenExpiresAt" TIMESTAMP NOT NULL,
 	    "profilePicUrl" character varying NOT NULL,
 	    "profilePicUpdatedAt" TIMESTAMP NOT NULL DEFAULT now(),
             CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id")
           )
       `,
-	),
-    undefined;
-	}
+    ),
+      undefined);
+  }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`DROP TABLE "users"`, undefined);

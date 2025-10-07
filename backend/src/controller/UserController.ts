@@ -1,19 +1,24 @@
 import { Request, Response } from "express";
-import { userService } from "../repository";
+import { userService, authService } from "../repository";
 
 export class UserController {
   static async protected(req: Request, res: Response) {
-    const data = await userService.protected();
+    const data = await authService.protected();
     return res.status(200).json(data);
   }
 
   static async register(req: Request, res: Response) {
-    const data = await userService.register(req);
+    const data = await authService.register(req, res);
     return res.status(200).json(data);
   }
 
   static async login(req: Request, res: Response) {
-    const data = await userService.login(req);
+    const data = await authService.login(req, res);
+    return res.status(200).json(data);
+  }
+
+  static async refreshToken(req: Request, res: Response) {
+    const data = await authService.refreshJwt(req);
     return res.status(200).json(data);
   }
 

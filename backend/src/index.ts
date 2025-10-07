@@ -8,6 +8,7 @@ const passport = require("passport");
 
 import config from "./config/config";
 import userRouter from "./routes/user.routes";
+import authRouter from "./routes/auth.routes";
 import { guitarRouter } from "./routes/guitar.routes";
 import { errorHandler } from "./middlewares/errorHandler";
 
@@ -23,7 +24,8 @@ app.use(express.json());
 app.use(errorHandler);
 app.use(express.static(path.join(__dirname, "..", "src", "/images"))); // Serve images in directory images/
 
-app.use("/auth", userRouter);
+app.use("/auth", authRouter);
+app.use("/user", userRouter);
 app.use("/guitar", guitarRouter);
 
 app.get("*", (req: Request, res: Response) => {
