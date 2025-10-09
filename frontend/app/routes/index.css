@@ -31,6 +31,10 @@ footer {
   text-align: center;
 }
 
+#error {
+  color: red;
+}
+
 #content-container {
   display: flex;
   flex-wrap: wrap;

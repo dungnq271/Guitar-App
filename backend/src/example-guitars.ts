@@ -1,4 +1,4 @@
-import { Guitar } from "../models/guitar";
+import { Guitar } from "./models/guitar";
 
 const guitars: Array<Guitar> = [
   {

@@ -1,20 +1,31 @@
-import { Form, Link, redirect } from "react-router";
-import type { Route } from "./+types/login";
+import { useState, type FormEvent } from "react";
+import { Form, Link, useNavigate } from "react-router";
 import { register } from "~/utils/apis";
 import "./register.css";
 
-export async function clientAction({ params, request }: Route.ActionArgs) {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
-  try {
-    const response = await register(data);
-    return redirect(`/${response.data.id}`);
-  } catch (err) {
-    return redirect(`/register`);
-  }
-}
-
 export default function RegisterPage() {
+  const [errorMsg, setErrorMsg] = useState<string>();
+  const navigate = useNavigate();
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = new FormData(e.target as HTMLFormElement);
+    const parsedData = Object.fromEntries(form.entries());
+
+    try {
+      const response = await register(parsedData);
+      console.log(response.data);
+      if (!response.data.success) {
+        setErrorMsg(response.data.message);
+      } else {
+        navigate("/", { replace: true });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div id="register-page">
       <div id="modal">
@@ -22,7 +33,8 @@ export default function RegisterPage() {
           <div id="title">
             <h1>Create an account</h1>
           </div>
-          <Form id="register-form" method="post">
+          <Form id="register-form" method="post" onSubmit={handleSubmit}>
+            {errorMsg && <p id="error">{errorMsg}</p>}
             <div id="name">
               <div id="first-name">
                 <p>First name</p>

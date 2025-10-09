@@ -1,61 +1,24 @@
 import { Request, Response } from "express";
-import { Guitar } from "../models/guitar";
-import guitars from "./example-guitars";
+import { guitarService } from "../repository";
 
-export const addGuitar = (req: Request, res: Response) => {
-  const guitar: Guitar = {
-    id: guitars.length + 1,
-    name: req.body.name,
-    image: req.body.image,
-    description: req.body.description,
-    shortDescription: req.body.shortDescription,
-    price: req.body.price,
-  };
-
-  guitars.push(guitar);
-  res.status(201).json(guitar);
-};
-
-export const listGuitars = (req: Request, res: Response) => {
-  res.json(
-    guitars.map((guitar) => ({
-      ...guitar,
-      image: `${req.protocol}://${req.get("host")}${guitar.image}`,
-    })),
-  );
-};
-
-export const getGuitar = (req: Request, res: Response) => {
-  const guitar = guitars.find((t) => t.id === parseInt(req.params.id));
-
-  if (!guitar) {
-    res.status(404).send({ error: "Guitar not found" });
-  } else {
-    res.json(guitar);
+export class GuitarController {
+  static async listGuitars(req: Request, res: Response) {
+    const data = await guitarService.listGuitars(req);
+    return res.status(200).json(data);
   }
-};
 
-export const updateGuitar = (req: Request, res: Response) => {
-  const guitar = guitars.find((t) => t.id === parseInt(req.params.id));
-
-  if (!guitar) {
-    res.status(404).send({ error: "Guitar not found" });
-  } else {
-    guitar.name = req.body.name || guitar.name;
-    guitar.description = req.body.description || guitar.description;
-    guitar.price = req.body.completed || guitar.price;
-
-    res.json(guitar);
+  static async getGuitar(req: Request, res: Response) {
+    const data = await guitarService.getGuitar(req);
+    return res.status(200).json(data);
   }
-};
 
-export const deleteGuitar = (req: Request, res: Response) => {
-  const index = guitars.findIndex((t) => t.id === parseInt(req.params.id));
-
-  if (index === -1) {
-    res.status(404).send({ error: "Guitar not found" });
-  } else {
-    guitars.splice(index, 1);
-    res.status(204).send();
+  static async updateGuitar(req: Request, res: Response) {
+    const data = await guitarService.updateGuitar(req);
+    return res.status(200).json(data);
   }
-};
+
+  static async deleteGuitar(req: Request, res: Response) {
+    const data = await guitarService.deleteGuitar(req);
+    return res.status(200).json(data);
+  }
+}

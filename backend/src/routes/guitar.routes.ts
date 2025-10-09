@@ -1,18 +1,20 @@
 import { Router } from "express";
-import {
-  addGuitar,
-  deleteGuitar,
-  getGuitar,
-  listGuitars,
-  updateGuitar,
-} from "../controller/GuitarController";
+import { GuitarController } from "../controller/GuitarController";
+import { validateGuitarId } from "../middlewares/validateGuitar";
 
-const router = Router();
+const guitarRouter = Router();
 
-router.post("/", addGuitar);
-router.get("/list", listGuitars);
-router.get("/:id", getGuitar);
-router.put("/:id", updateGuitar);
-router.delete("/:id", deleteGuitar);
+guitarRouter.get("/list", GuitarController.listGuitars);
+guitarRouter.get("/:id", validateGuitarId, GuitarController.getGuitar);
+guitarRouter.post(
+  "/update/:id",
+  validateGuitarId,
+  GuitarController.updateGuitar,
+);
+guitarRouter.post(
+  "/delete/:id",
+  validateGuitarId,
+  GuitarController.deleteGuitar,
+);
 
-export { router as guitarRouter };
+export default guitarRouter;

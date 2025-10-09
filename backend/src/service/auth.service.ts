@@ -7,6 +7,7 @@ import {
 } from "../lib/setFingerprintCookieAndSignJwt";
 import { generateJwt, sha256 } from "../lib/jwt";
 import { uuidv4 } from "../lib/auth";
+import { parse } from "cookie";
 import { User } from "../entity/User";
 const crypto = require("crypto");
 
@@ -69,6 +70,7 @@ export class AuthService {
                 message: "User login successfully",
                 jwt,
                 refreshToken,
+                user,
               };
             });
           } else {
@@ -83,9 +85,11 @@ export class AuthService {
   }
 
   async refreshJwt(req: Request) {
-    const { refreshToken, fingerprintHash } = req.body.input;
+    const { refreshToken, fingerprintHash } = req.params;
 
-    const fingerprintCookie = req.cookies[FINGERPRINT_COOKIE_NAME];
+    const fingerprintCookie = parse(req.headers.cookie)[
+      FINGERPRINT_COOKIE_NAME
+    ];
     console.log({ fingerprintCookie });
     if (!fingerprintCookie)
       return { success: false, message: "Unable to refresh JWT token" };

@@ -19,9 +19,18 @@ export class UserService {
 
       cache.put("data", users, 6000);
       return {
+        success: true,
         data: users,
       };
     }
+  }
+
+  async getProfile(req: Request) {
+    const { id } = req.params;
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+    return { success: true, user };
   }
 
   async updateUser(req: Request) {
@@ -33,7 +42,7 @@ export class UserService {
     user.username = username;
     user.email = email;
     await this.userRepository.save(user);
-    return { message: "udpdate", user };
+    return { success: true, message: "udpdate", user };
   }
 
   async deleteUser(req: Request) {
@@ -42,6 +51,6 @@ export class UserService {
       where: { id },
     });
     await this.userRepository.remove(user);
-    return { message: "ok" };
+    return { success: true, message: "ok" };
   }
 }

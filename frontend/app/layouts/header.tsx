@@ -3,10 +3,14 @@ import "./header.css";
 import { useAuth } from "~/provider/auth/authProvider";
 
 export default function Header() {
-  const { token, setToken } = useAuth();
+  const { user, jwt, setJwt, setRefreshToken } = useAuth();
 
+  // FIXME: login modal float to the top-left instead of center when signing out
   function handleSignOut() {
-    setToken();
+    setJwt("");
+    setRefreshToken("");
+    // to support logging out from all windows
+    localStorage.setItem("logout", Date.now().toString());
     redirect("/login");
   }
 
@@ -15,9 +19,9 @@ export default function Header() {
       <div id="left-header">
         <h2>LOGO</h2>
       </div>
-      {token ? (
+      {jwt ? (
         <div>
-          <p>Profile</p>
+          <NavLink to="/profile">Profile user {user?.username}</NavLink>
           <NavLink to="/" onClick={handleSignOut}>
             Sign out
           </NavLink>

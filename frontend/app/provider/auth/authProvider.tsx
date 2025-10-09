@@ -1,15 +1,24 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { setJwtToken, setRefreshToken } from "~/lib/auth";
+import { storeJwt, storeRefreshToken } from "~/lib/auth";
+import { type User } from "~/utils/models";
 
 interface AuthContextType {
-  token: string | null;
-  setToken: (token?: string) => void;
+  user: User | null;
+  setUser: (user: User) => void;
+  jwt: string;
+  setJwt: (token: string) => void;
+  refreshToken: string;
+  setRefreshToken: (token: string) => void;
 }
 
 const initialContextValues = {
-  token: null,
-  setToken: () => null,
+  user: null,
+  setUser: () => null,
+  jwt: "",
+  setJwt: () => null,
+  refreshToken: "",
+  setRefreshToken: () => null,
 };
 
 const AuthContext = createContext<AuthContextType>(initialContextValues);
@@ -20,35 +29,47 @@ interface Props {
 
 const AuthProvider = ({ children }: Props) => {
   // State to hold the authentication token
-  const [token, setToken_] = useState<string>(localStorage.getItem("token"));
+  const [user, setUser] = useState<User>();
+  const [jwt, setJwt_] = useState<string>("");
+  const [refreshToken, setRefreshToken_] = useState<string>("");
 
   // Function to set the authentication token
-  const setToken = (token?: string) => {
-    setToken_(token);
+  const setJwt = (token: string) => {
+    setJwt_(token);
+  };
+
+  const setRefreshToken = (token: string) => {
+    setRefreshToken_(token);
   };
 
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      setJwtToken(token);
+    if (jwt) {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
+      storeJwt(jwt);
+      storeRefreshToken(refreshToken);
     } else {
       delete axios.defaults.headers.common["Authorization"];
-      setJwtToken("");
+      storeJwt("");
+      storeRefreshToken("");
     }
-  }, [token]);
+  }, [jwt, refreshToken]);
 
   // Memoized value of the authentication context
   const contextValue = useMemo(
     () => ({
-      token,
-      setToken,
+      jwt,
+      setJwt,
+      refreshToken,
+      setRefreshToken,
     }),
-    [token],
+    [jwt, refreshToken],
   );
 
   // Provide the authentication context to the children components
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, setUser, ...contextValue }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

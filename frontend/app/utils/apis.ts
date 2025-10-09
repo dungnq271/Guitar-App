@@ -1,18 +1,21 @@
 import axios from "axios";
 import { type Guitar } from "./models";
+// import { axiosInstance as axios } from "../lib/axiosInterceptor";
+
+axios.defaults.withCredentials = true;
+const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export async function fetchGuitars() {
-  const response = await fetch("http://localhost:3000/guitar/list");
-  return response.json() as unknown as Guitar[];
-}
-
-export async function addGuitarToOrders() {
-  const response = await fetch("http://localhost:3000/guitars");
-  return response.json() as unknown as Guitar[];
+  const response = await axios.get(baseURL + `/guitar/list`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response.data.data as Guitar[];
 }
 
 export async function login(data: object) {
-  const response = await axios.post("http://localhost:3000/auth/login", data, {
+  const response = await axios.post(baseURL + "/auth/login", data, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -21,9 +24,24 @@ export async function login(data: object) {
 }
 
 export async function register(data: object) {
+  const response = await axios.post(baseURL + "/auth/register", data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
+}
+
+export async function refreshJwt(
+  refreshToken: string,
+  fingerprintHash: string,
+) {
   const response = await axios.post(
-    "http://localhost:3000/auth/register",
-    data,
+    baseURL + "/auth/refresh-token",
+    {
+      fingerprintHash,
+      refreshToken,
+    },
     {
       headers: {
         "Content-Type": "application/json",

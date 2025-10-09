@@ -5,11 +5,12 @@ import "reflect-metadata";
 import path = require("path");
 import cors = require("cors");
 const passport = require("passport");
+const cookieParser = require("cookie-parser");
 
 import config from "./config/config";
 import userRouter from "./routes/user.routes";
 import authRouter from "./routes/auth.routes";
-import { guitarRouter } from "./routes/guitar.routes";
+import guitarRouter from "./routes/guitar.routes";
 import { errorHandler } from "./middlewares/errorHandler";
 
 // Pass the global passport object into the configuration function
@@ -19,8 +20,15 @@ const app = express();
 
 // This will initialize the passport object on every request
 app.use(passport.initialize());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    credentials: true,
+  }),
+);
 app.use(express.json());
+app.use(cookieParser());
 app.use(errorHandler);
 app.use(express.static(path.join(__dirname, "..", "src", "/images"))); // Serve images in directory images/
 

@@ -1,15 +1,19 @@
-import { Link } from "react-router";
+import { Link, redirect } from "react-router";
 import type { Route } from "./+types/index";
 import { fetchGuitars } from "../utils/apis";
 import "./index.css";
 
-export async function clientLoader({ params }: Route.LoaderArgs) {
-  const guitars = await fetchGuitars();
-  return { guitars, userId: params.userId };
+export async function clientLoader() {
+  try {
+    const guitars = await fetchGuitars();
+    return guitars;
+  } catch {
+    return redirect("/login");
+  }
 }
 
 export default function Guitars({ loaderData }: Route.ComponentProps) {
-  const { guitars } = loaderData;
+  const guitars = loaderData;
 
   return (
     <div id="index-page">

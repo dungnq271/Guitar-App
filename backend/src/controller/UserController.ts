@@ -27,6 +27,11 @@ export class UserController {
     return res.status(200).json(data);
   }
 
+  static async getProfile(req: Request, res: Response) {
+    const data = await userService.getProfile(req);
+    return res.status(200).json(data);
+  }
+
   static async updateUser(req: Request, res: Response) {
     const data = await userService.updateUser(req);
     return res.status(200).json(data);

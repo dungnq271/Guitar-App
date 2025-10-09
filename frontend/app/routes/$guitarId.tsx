@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/guitar";
-import { fetchGuitars, type Guitar } from "../utils/apis";
+import { fetchGuitars } from "../utils/apis";
+import { type Guitar } from "~/utils/models";
 import { useState } from "react";
 import "./$guitarId.css";
 
