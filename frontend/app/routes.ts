@@ -7,12 +7,15 @@ import {
 
 // index: initial route
 export default [
-  // route("/", "routes/protectedRoute.tsx", []),
-  layout("layouts/layout.tsx", [
-    index("routes/index.tsx"),
-    route("profile", "routes/profile.tsx"),
-    route("orders", "routes/orders.tsx"),
-    route("guitars/:guitarId", "routes/$guitarId.tsx"),
+  route("/", "routes/protectedRoute.tsx", [
+    layout("layouts/outer-layout.tsx", [
+      layout("layouts/inner-layout.tsx", [
+        index("routes/home.tsx"),
+        route("profile", "routes/profile.tsx"),
+        route("orders", "routes/orders.tsx"),
+        route("guitars/:guitarId", "routes/$guitarId.tsx"),
+      ]),
+    ]),
   ]),
   route("login", "routes/login.tsx"),
   route("register", "routes/register.tsx"),

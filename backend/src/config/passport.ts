@@ -34,7 +34,6 @@ module.exports = (passport) => {
       jwt_payload: Payload,
       done,
     ) {
-      console.log(req.body);
       const { fingerprintHash } = req.body;
 
       const fingerprintCookie = req.cookies[FINGERPRINT_COOKIE_NAME];
@@ -43,17 +42,16 @@ module.exports = (passport) => {
       // Compute a SHA256 hash of the received fingerprint in cookie in order to compare
       // it to the fingerprint hash stored in the token
       const fingerprintCookieHash = sha256(fingerprintCookie);
-      console.log(fingerprintHash);
-      console.log(fingerprintCookieHash);
       if (fingerprintHash != fingerprintCookieHash) {
         return done(null, false);
       }
 
+      delete req.body.fingerprintHash;
       const userRepository = AppDataSource.getRepository(User);
 
       // We will assign the `sub` property on the JWT to the database ID of user
       userRepository
-        .findOneBy({ id: jwt_payload.sub })
+        .findOneBy({ id: jwt_payload["X-User-Id"] })
         .then((user) => {
           if (user) {
             // Since we are here, the JWT is valid and our user is valid, so we are authorized!

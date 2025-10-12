@@ -20,7 +20,7 @@
   border-radius: 10px;
 }
 
-#modal #title {
+#login-page #modal #title {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -55,7 +55,7 @@ button[type="submit"] {
   justify-content: space-between;
 }
 
-#modal-page a {
+#login-page a {
   color: blue;
 }
 

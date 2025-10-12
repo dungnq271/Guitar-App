@@ -1,5 +1,6 @@
 import { Link } from "react-router";
-import type { Route } from "./+types/guitar";
+import { createPortal } from "react-dom";
+import type { Route } from "./+types/$guitarId";
 import { fetchGuitars } from "../utils/apis";
 import { type Guitar } from "~/utils/models";
 import { useState } from "react";
@@ -43,7 +44,6 @@ export default function Guitars({ loaderData }: Route.ComponentProps) {
           </button>
         </div>
       </div>
-
       <div id="full-img-panel">
         <div id="full-img-div">
           <img id="full-img" src={guitar.image} alt={guitar.name} />
@@ -57,8 +57,8 @@ export default function Guitars({ loaderData }: Route.ComponentProps) {
 function Modal({ isShown }: ModalProps) {
   return (
     isShown && (
-      <div id="modal">
-        <div id="modal-body">
+      <div className="modal-bg">
+        <div id="modal">
           <img src="/app/images/tick_icon.svg" width="1" height="1" />
           <p>Item added</p>
         </div>

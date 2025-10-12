@@ -42,6 +42,7 @@ export class AuthService {
     }
 
     return {
+      success: true,
       message: "User created successfully",
       jwt,
       refreshToken,

@@ -18,8 +18,7 @@ export function setFingerprintCookieAndSignJwt(
       path: "/",
       maxAge: FINGERPRINT_COOKIE_MAX_AGE,
       httpOnly: true,
-      // https://stackoverflow.com/questions/59990864/what-is-the-difference-between-samesite-lax-and-samesite-strict
-      // sameSite: "strict", // only for top-level navigation (ie URL changes)
+      // sameSite: "strict",        // TODO: config this
       secure: config.nodeEnv === "production",
     }),
   );

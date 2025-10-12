@@ -1,18 +1,18 @@
 #index-page {
-  grid-area: alias-inner-grid;
+  grid-area: alias-main;
   overflow-y: scroll;
   display: grid;
   grid-template-rows: 1fr auto 60px;
   grid-template-columns: 1fr;
   grid-template-areas:
-    "alias-main"
+    "alias-content"
     "alias-aside"
     "alias-footer";
   padding: 1rem;
 }
 
 #index-page main {
-  grid-area: alias-main;
+  grid-area: alias-content;
 }
 
 aside {
@@ -117,7 +117,7 @@ img:hover {
   width: 80%;
   bottom: 0;
   right: 0;
-  z-index: 10;
+  z-index: 1;
   background-color: var(--color-gray-900-60);
   backdrop-filter: blur(12px);
   border-radius: 1rem;

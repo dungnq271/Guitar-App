@@ -2,32 +2,44 @@ import { NavLink, redirect } from "react-router";
 import "./header.css";
 import { useAuth } from "~/provider/auth/authProvider";
 
-export default function Header() {
+interface Props {
+  isMobile: boolean;
+  toggleMenu: () => void;
+}
+
+export default function Header({ isMobile, toggleMenu }: Props) {
   const { user, jwt, setJwt, setRefreshToken } = useAuth();
 
-  // FIXME: login modal float to the top-left instead of center when signing out
   function handleSignOut() {
     setJwt("");
     setRefreshToken("");
-    // to support logging out from all windows
-    localStorage.setItem("logout", Date.now().toString());
-    redirect("/login");
+    localStorage.setItem("logout", Date.now().toString()); // to support logging out from all windows
+    // TODO: Hit the signout endpoint to clear the fingerprint cookie
   }
 
   return (
     <header>
       <div id="left-header">
+        {isMobile && (
+          <span
+            className="material-symbols-outlined"
+            id="menu"
+            onClick={toggleMenu}
+          >
+            menu
+          </span>
+        )}
         <h2>LOGO</h2>
       </div>
       {jwt ? (
-        <div>
+        <div id="avatar">
           <NavLink to="/profile">Profile user {user?.username}</NavLink>
           <NavLink to="/" onClick={handleSignOut}>
             Sign out
           </NavLink>
         </div>
       ) : (
-        <div id="right-header">
+        <div id="auth-nav">
           <NavLink id="login" to="/login">
             <p>Sign in</p>
           </NavLink>

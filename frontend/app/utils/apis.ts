@@ -2,7 +2,7 @@ import axios from "axios";
 import { type Guitar } from "./models";
 // import { axiosInstance as axios } from "../lib/axiosInterceptor";
 
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export async function fetchGuitars() {
@@ -16,6 +16,15 @@ export async function fetchGuitars() {
 
 export async function login(data: object) {
   const response = await axios.post(baseURL + "/auth/login", data, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  return response;
+}
+
+export async function updateUser(data: object) {
+  const response = await axios.post(baseURL + `/user/update`, data, {
     headers: {
       "Content-Type": "application/json",
     },

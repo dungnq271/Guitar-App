@@ -17,7 +17,7 @@
   border-radius: 10px;
 }
 
-#left-modal {
+#register-page #left-modal {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@
   align-items: center;
 }
 
-#modal #title {
+#register-page #modal #title {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -101,12 +101,12 @@ button[type="submit"]:hover {
   margin-bottom: 8px;
 }
 
-#right-modal {
+#register-page #right-modal {
   height: 100%;
   width: 50%;
 }
 
-#right-modal img {
+#register-page #right-modal img {
   height: 100%;
   width: 100%;
 }

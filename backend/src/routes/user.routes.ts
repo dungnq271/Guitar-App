@@ -10,7 +10,11 @@ userRouter.get(
   passport.authenticate("jwt", { session: false }),
   UserController.getProfile,
 );
-userRouter.post("/update/:id", UserController.updateUser);
+userRouter.post(
+  "/update",
+  passport.authenticate("jwt", { session: false }),
+  UserController.updateUser,
+);
 userRouter.post("/delete/:id", UserController.deleteUser);
 
 export default userRouter;

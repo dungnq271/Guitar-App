@@ -1,5 +1,5 @@
 export function getJwt() {
-  return sessionStorage.getItem("jwt");
+  return sessionStorage.getItem("jwt") || "";
 }
 
 export function storeJwt(token: string) {
@@ -7,7 +7,7 @@ export function storeJwt(token: string) {
 }
 
 export function getRefreshToken() {
-  return sessionStorage.getItem("refreshToken");
+  return sessionStorage.getItem("refreshToken") || "";
 }
 
 export function storeRefreshToken(token: string) {

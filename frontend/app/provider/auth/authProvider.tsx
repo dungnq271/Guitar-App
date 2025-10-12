@@ -1,7 +1,15 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import { storeJwt, storeRefreshToken } from "~/lib/auth";
 import { type User } from "~/utils/models";
+import { getJwt, getRefreshToken } from "~/lib/auth";
 
 interface AuthContextType {
   user: User | null;
@@ -29,7 +37,7 @@ interface Props {
 
 const AuthProvider = ({ children }: Props) => {
   // State to hold the authentication token
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
   const [jwt, setJwt_] = useState<string>("");
   const [refreshToken, setRefreshToken_] = useState<string>("");
 
@@ -42,16 +50,32 @@ const AuthProvider = ({ children }: Props) => {
     setRefreshToken_(token);
   };
 
+  // TODO: check why user is set to null when refreshing page
+  useLayoutEffect(() => {
+    const jwtFromStorage = getJwt();
+    if (jwtFromStorage) {
+      console.log("Called jwtFromStorage");
+      axios.defaults.headers.common["Authorization"] =
+        "Bearer " + jwtFromStorage;
+      setJwt(jwtFromStorage);
+      setRefreshToken(getRefreshToken());
+    }
+  });
+
   useEffect(() => {
     if (jwt) {
+      console.log("Called jwt");
       axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
       storeJwt(jwt);
       storeRefreshToken(refreshToken);
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-      storeJwt("");
-      storeRefreshToken("");
     }
+    /* else {
+     *   console.log("set user null");
+     *   delete axios.defaults.headers.common["Authorization"];
+     *   setUser(null);
+     *   storeJwt("");
+     *   storeRefreshToken("");
+     * } */
   }, [jwt, refreshToken]);
 
   // Memoized value of the authentication context

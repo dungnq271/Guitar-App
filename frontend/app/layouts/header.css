@@ -1,7 +1,7 @@
 header {
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
+  padding-left: 1rem;
   border-bottom: 1px solid var(--color-gray-500);
 }
 
@@ -11,11 +11,19 @@ header {
   align-items: center;
 }
 
-#right-header {
+#auth-nav {
   grid-area: alias-rh;
   display: flex;
   align-items: center;
   gap: 2rem;
+}
+
+#avatar {
+  grid-area: alias-rh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
 }
 
 #register p {
@@ -26,4 +34,9 @@ header {
 
 #register:hover {
   opacity: 0.8;
+}
+
+.material-symbols-outlined[id="menu"] {
+  padding-top: 6px;
+  margin-right: 1rem;
 }

@@ -34,15 +34,10 @@ export class UserService {
   }
 
   async updateUser(req: Request) {
-    const { id } = req.params;
-    const { username, email } = req.body;
-    const user = await this.userRepository.findOne({
-      where: { id },
-    });
-    user.username = username;
-    user.email = email;
+    let user = req.user as User;
+    user = { ...user, ...req.body };
     await this.userRepository.save(user);
-    return { success: true, message: "udpdate", user };
+    return { success: true, message: "updated", user };
   }
 
   async deleteUser(req: Request) {
