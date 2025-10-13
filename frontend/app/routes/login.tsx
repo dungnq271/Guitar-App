@@ -1,13 +1,14 @@
 import { useState, type FormEvent } from "react";
-import { Form, Link, redirect, useNavigate } from "react-router";
+import { Form, Link, useNavigate, useLocation } from "react-router";
 import { login } from "~/utils/apis";
-import "./login.css";
 import { useAuth } from "~/provider/auth/authProvider";
+import "./login.css";
 
 export default function SignInPage() {
   const [errorMsg, setErrorMsg] = useState<string>();
   const { setUser, setJwt, setRefreshToken } = useAuth();
   const navigate = useNavigate();
+  /* const location = useLocation(); */
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,7 +24,12 @@ export default function SignInPage() {
         setUser(response.data.user);
         setJwt(response.data.jwt);
         setRefreshToken(response.data.refreshToken);
-        navigate("/", { replace: true });
+
+        /* const origin = location.state?.from?.pathname || "/";
+         * console.log(origin); */
+        /* navigate(origin); */
+
+        navigate("/");
       }
     } catch (err) {
       console.log(err);

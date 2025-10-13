@@ -3,9 +3,9 @@ import {
   createContext,
   useContext,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useState,
+  useLayoutEffect,
 } from "react";
 import { storeJwt, storeRefreshToken } from "~/lib/auth";
 import { type User } from "~/utils/models";
@@ -38,49 +38,27 @@ interface Props {
 const AuthProvider = ({ children }: Props) => {
   // State to hold the authentication token
   const [user, setUser] = useState<User | null>(null);
-  const [jwt, setJwt_] = useState<string>("");
-  const [refreshToken, setRefreshToken_] = useState<string>("");
-
-  // Function to set the authentication token
-  const setJwt = (token: string) => {
-    setJwt_(token);
-  };
-
-  const setRefreshToken = (token: string) => {
-    setRefreshToken_(token);
-  };
+  const [jwt, setJwt] = useState<string>("");
+  const [refreshToken, setRefreshToken] = useState<string>("");
 
   // TODO: check why user is set to null when refreshing page
-  useLayoutEffect(() => {
-    const jwtFromStorage = getJwt();
-    if (jwtFromStorage) {
-      console.log("Called jwtFromStorage");
-      axios.defaults.headers.common["Authorization"] =
-        "Bearer " + jwtFromStorage;
-      setJwt(jwtFromStorage);
-      setRefreshToken(getRefreshToken());
-    }
-  });
-
   useEffect(() => {
     if (jwt) {
-      console.log("Called jwt");
       axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
       storeJwt(jwt);
       storeRefreshToken(refreshToken);
+    } else {
+      delete axios.defaults.headers.common["Authorization"];
+      storeJwt("");
+      storeRefreshToken("");
     }
-    /* else {
-     *   console.log("set user null");
-     *   delete axios.defaults.headers.common["Authorization"];
-     *   setUser(null);
-     *   storeJwt("");
-     *   storeRefreshToken("");
-     * } */
   }, [jwt, refreshToken]);
 
   // Memoized value of the authentication context
   const contextValue = useMemo(
     () => ({
+      user,
+      setUser,
       jwt,
       setJwt,
       refreshToken,
@@ -91,9 +69,7 @@ const AuthProvider = ({ children }: Props) => {
 
   // Provide the authentication context to the children components
   return (
-    <AuthContext.Provider value={{ user, setUser, ...contextValue }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 

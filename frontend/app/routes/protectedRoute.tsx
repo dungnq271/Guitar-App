@@ -1,17 +1,16 @@
-import { Navigate, Outlet, useNavigate } from "react-router";
-import { useEffect } from "react";
+import { Outlet, Navigate, useNavigate, useLocation } from "react-router";
 import { useAuth } from "~/provider/auth/authProvider";
 
 export default function ProtectedRoute() {
   const { jwt } = useAuth();
-  const navigate = useNavigate();
+  /* const navigate = useNavigate(); */
+  /* const location = useLocation(); */
 
-  // TODO: check if token expires
-  // Check if the user is authenticated
+  // If not authenticated, navigate to login route
   if (!jwt) {
-    // If not authenticated, redirect to the login page
-    /* return <Navigate to="/login" />; */
-    navigate("/login", { replace: true });
+    console.log("navigate to /login");
+    /* return <Navigate to="/login" replace state={{ from: location }} />; */
+    return <Navigate to="/login" replace />;
   }
 
   // If authenticated, render the child routes
