@@ -2,6 +2,8 @@ import { NavLink, redirect } from "react-router";
 import "./header.css";
 import { useAuth } from "~/provider/auth/authProvider";
 import { storeJwt, storeRefreshToken } from "~/lib/auth";
+import { useEffect } from "react";
+import { getUser } from "~/utils/apis";
 
 interface Props {
   isMobile: boolean;

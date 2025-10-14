@@ -1,17 +1,28 @@
-import { Outlet, Navigate, useNavigate, useLocation } from "react-router";
+import { Outlet, useNavigate, Navigate } from "react-router";
+import { useEffect } from "react";
 import { useAuth } from "~/provider/auth/authProvider";
 
 export default function ProtectedRoute() {
   const { jwt } = useAuth();
-  /* const navigate = useNavigate(); */
+  const navigate = useNavigate();
   /* const location = useLocation(); */
 
-  // If not authenticated, navigate to login route
-  if (!jwt) {
-    console.log("navigate to /login");
-    /* return <Navigate to="/login" replace state={{ from: location }} />; */
-    return <Navigate to="/login" replace />;
-  }
+  useEffect(() => {
+    // If not authenticated, navigate to login route
+    if (!jwt) {
+      console.log("navigate to /login");
+      navigate("/login");
+    } else {
+      console.log("navigate to /");
+      navigate("/");
+    }
+  }, [jwt]);
+
+  /* if (!jwt) {
+   *   return <Navigate to="/login" />;
+   * } else {
+   *   navigate("/");
+   * } */
 
   // If authenticated, render the child routes
   return <Outlet />;

@@ -23,6 +23,19 @@ export async function login(data: object) {
   return response;
 }
 
+export async function getUser() {
+  const response = await axios.post(
+    baseURL + `/user`,
+    {},
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  return response;
+}
+
 export async function updateUser(data: object) {
   const response = await axios.post(baseURL + `/user/update`, data, {
     headers: {

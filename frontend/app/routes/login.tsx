@@ -1,5 +1,11 @@
 import { useState, type FormEvent } from "react";
-import { Form, Link, useNavigate, useLocation } from "react-router";
+import {
+  Form,
+  Link,
+  useNavigate,
+  useLocation,
+  useOutletContext,
+} from "react-router";
 import { login } from "~/utils/apis";
 import { useAuth } from "~/provider/auth/authProvider";
 import "./login.css";

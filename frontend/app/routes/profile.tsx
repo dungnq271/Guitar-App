@@ -5,6 +5,10 @@ import { updateUser } from "~/utils/apis";
 import { getJwt, parseJwt } from "~/lib/auth";
 import "./profile.css";
 
+export async function clientLoader() {
+  console.log(getJwt());
+}
+
 export default function Profile() {
   const { user, setUser } = useAuth();
   const [isEdit, setIsEdit] = useState<boolean>(false);

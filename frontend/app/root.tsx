@@ -8,6 +8,8 @@ import {
 } from "react-router";
 import type { Route } from "./+types/root";
 import AuthProvider from "./provider/auth/authProvider";
+import { BroadcastChannel } from "broadcast-channel";
+import { getJwt } from "./lib/auth";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -46,34 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  // Taken from https://blog.guya.net/2015/06/12/sharing-sessionstorage-between-tabs-for-secure-multi-tab-authentication/
-  // This is a secure way to share sessionStorage between tabs.
-  if (typeof window !== "undefined") {
-    // Ask other tabs for session storage (this is ONLY to trigger event)
-    if (!sessionStorage.jwt) {
-      /* console.log("Calling getSessionStorage"); */
-      localStorage.setItem("getSessionStorage", String(Date.now()));
-    }
-
-    window.addEventListener("storage", (event: StorageEvent) => {
-      if (event.key == "getSessionStorage") {
-        /* console.log("set storage data", JSON.stringify(sessionStorage)); */
-        // Some tab asked for the sessionStorage -> send it
-        localStorage.setItem("sessionStorage", JSON.stringify(sessionStorage));
-        // The other tab should now have it, so we're done with it.
-        localStorage.removeItem("sessionStorage");
-      } else if (event.key == "sessionStorage" && !sessionStorage.jwt) {
-        // Another tab sent data <- get it
-        const data = JSON.parse(event.newValue || "");
-        console.log("get storage data");
-
-        for (let key in data) {
-          sessionStorage.setItem(key, data[key]);
-        }
-      }
-    });
-  }
-
+  /* return <Outlet />; */
   return (
     <AuthProvider>
       <Outlet />
