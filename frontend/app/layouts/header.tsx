@@ -1,8 +1,9 @@
-import { NavLink, redirect } from "react-router";
+import { NavLink, redirect, useLocation, useOutletContext } from "react-router";
 import "./header.css";
+import { useState } from "react";
 import { useAuth } from "~/provider/auth/authProvider";
-import { storeJwt, storeRefreshToken } from "~/lib/auth";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
+import { parseJwt } from "~/lib/auth";
 import { getUser } from "~/utils/apis";
 
 interface Props {
@@ -11,11 +12,9 @@ interface Props {
 }
 
 export default function Header({ isMobile, toggleMenu }: Props) {
-  const { user, jwt, setUser, setJwt, setRefreshToken } = useAuth();
+  const { user, setUser, jwt, setJwt, setRefreshToken } = useAuth();
 
   function handleSignOut() {
-    /* storeJwt("");
-     * storeRefreshToken(""); */
     setJwt("");
     setRefreshToken("");
     localStorage.setItem("logout", Date.now().toString()); // to support logging out from all windows

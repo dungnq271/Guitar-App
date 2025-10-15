@@ -26,6 +26,7 @@ export class UserService {
   }
 
   async getProfile(req: Request) {
+    console.log(req.params);
     const { id } = req.params;
     const user = await this.userRepository.findOne({
       where: { id },

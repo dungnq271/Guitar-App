@@ -1,8 +1,10 @@
 import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { Outlet } from "react-router";
+import { useAuth } from "~/provider/auth/authProvider";
 import Header from "./header";
 
 export default function OuterLayout() {
+  const { user } = useAuth();
   const ref = useRef(false);
   const [windowWidth, setWindowWidth] = useState(0);
   const [isOpenNav, setOpenNav] = useState(false);
@@ -38,7 +40,7 @@ export default function OuterLayout() {
   return (
     <div id="outer-layout">
       <Header isMobile={isMobile} toggleMenu={() => setOpenNav(!isOpenNav)} />
-      <Outlet context={{ isMobile, isOpenNav }} />
+      <Outlet context={{ isMobile, isOpenNav, user }} />
     </div>
   );
 }

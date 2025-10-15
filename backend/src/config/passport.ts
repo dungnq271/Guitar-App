@@ -42,12 +42,17 @@ module.exports = (passport) => {
       // Compute a SHA256 hash of the received fingerprint in cookie in order to compare
       // it to the fingerprint hash stored in the token
       const fingerprintCookieHash = sha256(fingerprintCookie);
+
+      console.log(fingerprintHash, fingerprintCookieHash);
+
       if (fingerprintHash != fingerprintCookieHash) {
         return done(null, false);
       }
 
       delete req.body.fingerprintHash;
       const userRepository = AppDataSource.getRepository(User);
+
+      console.log("everything done");
 
       // We will assign the `sub` property on the JWT to the database ID of user
       userRepository

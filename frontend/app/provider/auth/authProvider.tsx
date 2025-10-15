@@ -1,21 +1,12 @@
 import axios from "axios";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useLayoutEffect,
-} from "react";
-import { storeJwt, storeRefreshToken } from "~/lib/auth";
-import { type User } from "~/utils/models";
-import { usePersistor, LocalStorageManager } from "~/lib/persistor";
-import { useRef } from "react";
-import { Navigate, Outlet } from "react-router";
-import { getJwt, getRefreshToken } from "~/lib/auth";
+import { createContext, useContext, useEffect, useRef } from "react";
+import { Role, type User } from "~/utils/models";
+import { usePersistor, useDriver, LocalStorageManager } from "~/lib/persistor";
+import { parseJwt } from "~/lib/auth";
+import { getUser } from "~/utils/apis";
 
 interface AuthContextType {
-  user: User | null;
+  user: User;
   setUser: (user: User) => void;
   jwt: string;
   setJwt: (data: string) => void;
@@ -24,8 +15,16 @@ interface AuthContextType {
 }
 
 const initialContextValues = {
-  user: null,
-  setUser: () => null,
+  user: {
+    id: -1,
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    profilePicUrl: "",
+    role: Role.USER,
+  },
+  setUser: (data: User) => null,
   jwt: "",
   setJwt: () => null,
   refreshToken: "",
@@ -39,49 +38,59 @@ interface Props {
 }
 
 const AuthProvider = ({ children }: Props) => {
-  // State to hold the authentication token
-  const driver = useRef(new LocalStorageManager()).current;
-  const [user, setUser] = useState<User | null>(null);
-  /* const [jwt, setJwt] = useState<string>(""); */
-  const [jwt, setJwt] = usePersistor("jwt", "", driver);
-  /* const [refreshToken, setRefreshToken] = useState<string>(""); */
-  const [refreshToken, setRefreshToken] = usePersistor(
+  const [driver, userDriver] = useDriver();
+  const [user, setUser] = usePersistor<User>(
+    "user",
+    initialContextValues.user,
+    userDriver as LocalStorageManager<User>,
+  );
+  const [jwt, setJwt] = usePersistor<string>(
+    "jwt",
+    "",
+    driver as LocalStorageManager<string>,
+  );
+  const [refreshToken, setRefreshToken] = usePersistor<string>(
     "refreshToken",
     "",
-    driver,
+    driver as LocalStorageManager<string>,
   );
 
-  // TODO: check why user is set to null when refreshing page
+  useEffect(() => {
+    if (jwt && user.id === -1) {
+      const parsedJwt = parseJwt(jwt as string);
+      const fingerprintHash = parsedJwt?.["X-User-Fingerprint"];
+      getUser({ fingerprintHash })
+        .then((response) => {
+          if (response.data.user) {
+            setUser(response.data.user);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [jwt]);
+
   useEffect(() => {
     if (jwt) {
       console.log("set jwt to axios");
       axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
-      /* storeJwt(jwt);
-       * storeRefreshToken(refreshToken); */
+      /* driver.set("jwt", jwt);
+       * driver.set("refreshToken", refreshToken); */
     } else {
       delete axios.defaults.headers.common["Authorization"];
-      /* storeJwt("");
-       * storeRefreshToken(""); */
+      /* driver.set("jwt", "");
+       * driver.set("refreshToken", ""); */
     }
   }, [jwt, refreshToken]);
 
-  // Memoized value of the authentication context
-  const contextValue = useMemo(
-    () => ({
-      user,
-      setUser,
-      jwt,
-      setJwt,
-      refreshToken,
-      setRefreshToken,
-    }),
-    [jwt, refreshToken],
-  );
-
   // Provide the authentication context to the children components
   return (
-    // @ts-ignore
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <AuthContext.Provider
+      value={{ user, setUser, jwt, setJwt, refreshToken, setRefreshToken }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 };
 

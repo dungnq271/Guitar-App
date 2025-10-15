@@ -21,6 +21,7 @@ export default function SignInPage() {
 
     const form = new FormData(e.target as HTMLFormElement);
     const parsedData = Object.fromEntries(form.entries());
+    console.log(parsedData);
 
     try {
       const response = await login(parsedData);

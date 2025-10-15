@@ -7,9 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 import type { Route } from "./+types/root";
-import AuthProvider from "./provider/auth/authProvider";
-import { BroadcastChannel } from "broadcast-channel";
-import { getJwt } from "./lib/auth";
+import AuthProvider, { useAuth } from "./provider/auth/authProvider";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
