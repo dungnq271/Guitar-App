@@ -73,7 +73,6 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (jwt) {
-      console.log("set jwt to axios");
       axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
       /* driver.set("jwt", jwt);
        * driver.set("refreshToken", refreshToken); */
