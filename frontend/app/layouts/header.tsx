@@ -1,10 +1,6 @@
-import { NavLink, redirect, useLocation, useOutletContext } from "react-router";
+import { NavLink } from "react-router";
 import "./header.css";
-import { useState } from "react";
 import { useAuth } from "~/provider/auth/authProvider";
-import { useEffect, useLayoutEffect } from "react";
-import { parseJwt } from "~/lib/auth";
-import { getUser } from "~/utils/apis";
 
 interface Props {
   isMobile: boolean;
@@ -12,7 +8,7 @@ interface Props {
 }
 
 export default function Header({ isMobile, toggleMenu }: Props) {
-  const { user, setUser, jwt, setJwt, setRefreshToken } = useAuth();
+  const { user, jwt, setJwt, setRefreshToken } = useAuth();
 
   function handleSignOut() {
     setJwt("");

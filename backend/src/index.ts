@@ -2,6 +2,7 @@ import { AppDataSource } from "./data-source";
 import * as express from "express";
 import { Request, Response } from "express";
 import "reflect-metadata";
+import helmet from "helmet";
 import path = require("path");
 import cors = require("cors");
 const passport = require("passport");
@@ -20,6 +21,15 @@ const app = express();
 
 // This will initialize the passport object on every request
 app.use(passport.initialize());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        "script-src": ["'self'"],
+      },
+    },
+  }),
+);
 app.use(
   cors({
     origin: "http://localhost:5173",

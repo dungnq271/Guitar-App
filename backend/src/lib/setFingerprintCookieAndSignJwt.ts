@@ -23,8 +23,6 @@ export function setFingerprintCookieAndSignJwt(
     }),
   );
 
-  res.setHeader("Content-Security-Policy", "script-src 'self';");
-
   return generateJwt({
     allowedRoles: ["user"],
     defaultRole: "user",

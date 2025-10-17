@@ -19,7 +19,7 @@ export default function RegisterPage() {
       if (!response.data.success) {
         setErrorMsg(response.data.message);
       } else {
-        navigate("/", { replace: true });
+        navigate("/login", { replace: true });
       }
     } catch (err) {
       console.log(err);
