@@ -23,13 +23,6 @@ export function setFingerprintCookieAndSignJwt(
     }),
   );
 
-  res.setHeader(
-    "Content-Security-Policy-Report-Only",
-    "script-src 'self'; object-src 'none'; base-uri 'self'; report-uri /reporting/csp",
-    // "Content-Security-Policy",
-    // "script-src 'self'; object-src: none; base-uri: self;",
-  );
-
   return generateJwt({
     allowedRoles: ["user"],
     defaultRole: "user",

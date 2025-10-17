@@ -7,4 +7,19 @@ services:
       POSTGRES_USER: "leonard"
       POSTGRES_PASSWORD: "Abc@123"
       POSTGRES_DB: "ecm-postgres"
+    volumes:
+      - ecm-postgres-volume:/var/lib/postgres
 
+  redis:
+    image: redis:latest
+    container_name: redis-server
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/var/lib/redis
+    command: ["redis-server", "--requirepass", "Q1w2e3r4"]
+
+volumes:
+  ecm-postgres-volume:
+  redis-data:

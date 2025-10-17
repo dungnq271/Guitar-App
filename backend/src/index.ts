@@ -25,9 +25,15 @@ app.use(passport.initialize());
 app.use(
   helmet({
     contentSecurityPolicy: {
+      useDefaults: true,
       directives: {
         "script-src": ["'self'"],
+        "object-src": ["'none'"],
+        "base-uri": ["'self'"],
+        "upgrade-insecure-requests":
+          config.nodeEnv === "development" ? null : [],
       },
+      reportOnly: true,
     },
   }),
 );
