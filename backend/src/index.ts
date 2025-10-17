@@ -12,6 +12,7 @@ import config from "./config/config";
 import userRouter from "./routes/user.routes";
 import authRouter from "./routes/auth.routes";
 import guitarRouter from "./routes/guitar.routes";
+import reportRouter from "./routes/reporting.routes";
 import { errorHandler } from "./middlewares/errorHandler";
 
 // Pass the global passport object into the configuration function
@@ -45,6 +46,7 @@ app.use(express.static(path.join(__dirname, "..", "src", "/images"))); // Serve 
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/guitar", guitarRouter);
+app.use("/reporting", reportRouter);
 
 app.get("*", (req: Request, res: Response) => {
   res.status(505).json({ message: "Bad Request" });
