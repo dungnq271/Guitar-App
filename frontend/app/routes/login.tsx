@@ -1,11 +1,5 @@
 import { useState, type FormEvent } from "react";
-import {
-  Form,
-  Link,
-  useNavigate,
-  useLocation,
-  useOutletContext,
-} from "react-router";
+import { Form, Link, useNavigate } from "react-router";
 import { login } from "~/utils/apis";
 import { useAuth } from "~/provider/auth/authProvider";
 import "./login.css";
@@ -30,10 +24,6 @@ export default function SignInPage() {
         setUser(response.data.user);
         setJwt(response.data.jwt);
         setRefreshToken(response.data.refreshToken);
-
-        /* const origin = location.state?.from?.pathname || "/";
-         * console.log(origin); */
-        /* navigate(origin); */
 
         navigate("/");
       }

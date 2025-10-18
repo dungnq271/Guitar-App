@@ -1,4 +1,3 @@
-import { AppDataSource } from "./data-source";
 import * as express from "express";
 import { Request, Response } from "express";
 import "reflect-metadata";
@@ -58,11 +57,4 @@ app.get("*", (req: Request, res: Response) => {
   res.status(505).json({ message: "Bad Request" });
 });
 
-AppDataSource.initialize()
-  .then(async () => {
-    app.listen(config.port, () => {
-      console.log("Server is running on http://localhost:" + config.port);
-    });
-    console.log("Data Source has been initialized!");
-  })
-  .catch((error) => console.log(error));
+export default app;

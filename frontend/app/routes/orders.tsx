@@ -1,12 +1,4 @@
-import {
-  Form,
-  Link,
-  redirect,
-  useFetcher,
-  useNavigate,
-  useNavigation,
-} from "react-router";
-import type { Route } from "./+types/guitars";
+import type { Route } from "./+types/orders";
 import { useAuth } from "~/provider/auth/authProvider";
 
 export async function clientLoader({ params }: Route.LoaderArgs) {}
