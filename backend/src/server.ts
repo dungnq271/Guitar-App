@@ -1,12 +1,19 @@
-import { AppDataSource } from "./data-source";
-import app from "./app";
-import config from "./config/config";
+import { AppDataSource } from './data-source';
+import app from './app';
+import envConfig from './config/envConfig';
+import dataSource from './data-source';
 
-AppDataSource.initialize()
-  .then(async () => {
-    app.listen(config.port, () => {
-      console.log("Server is running on http://localhost:" + config.port);
+const { PORT } = envConfig;
+
+export const main = async () => {
+  try {
+    await dataSource.AppDataSource.initialize();
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
     });
-    console.log("Data Source has been initialized!");
-  })
-  .catch((error) => console.log(error));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+main();

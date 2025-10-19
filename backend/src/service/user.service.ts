@@ -1,36 +1,29 @@
 import { Request, Response } from "express";
 import { Repository } from "typeorm";
 import { User } from "../entity/User";
-import * as cache from "memory-cache";
 
 export class UserService {
   constructor(private readonly userRepository: Repository<User>) {}
 
-  async getUsers(res: Response) {
-    const data = cache.get("data");
-    if (data) {
-      console.log("serving from cache");
-      res.status(200).json({
-        data,
-      });
-    } else {
-      console.log("serving from db");
-      const users = await this.userRepository.find();
-
-      cache.put("data", users, 6000);
-      res.status(200).json({
-        success: true,
-        data: users,
-      });
-    }
+  async getAll(res: Response) {
+    const users = await this.userRepository.find();
+    console.log(users);
+    res.status(200).json({ success: true, users });
   }
 
   async getProfile(req: Request, res: Response) {
-    console.log(req.params);
     const { id } = req.params;
-    const user = await this.userRepository.findOne({
-      where: { id },
-    });
+    let user;
+
+    try {
+      user = await this.userRepository.findOne({
+        where: { id },
+      });
+    } catch (err) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User not found" });
+    }
     res.status(200).json({ success: true, user });
   }
 

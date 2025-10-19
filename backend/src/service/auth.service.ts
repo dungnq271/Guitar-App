@@ -51,7 +51,7 @@ export class AuthService {
 
     res.status(200).json({
       success: true,
-      message: "User created successfully",
+      message: "User registered successfully",
       jwt,
       refreshToken,
       userId: user.id,

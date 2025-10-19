@@ -1,10 +1,10 @@
-let crypto = require("crypto");
-import * as jwt from "jsonwebtoken";
-import config from "../config/config";
-import type { StringValue } from "ms";
+let crypto = require('crypto');
+import * as jwt from 'jsonwebtoken';
+import envConfig from '../config/envConfig';
+import type { StringValue } from 'ms';
 
 export function sha256(value: string) {
-  return crypto.createHash("sha256").update(value, "utf8").digest("hex");
+  return crypto.createHash('sha256').update(value, 'utf8').digest('hex');
 }
 
 interface GenerateJWTParams {
@@ -20,8 +20,8 @@ export function generateJwt(params: GenerateJWTParams) {
     ...params.otherClaims,
   };
 
-  return jwt.sign(payload, config.jwtSecret, {
-    algorithm: "RS256",
-    expiresIn: params.expiresIn || "1h",
+  return jwt.sign(payload, envConfig.JWT_SECRET, {
+    algorithm: 'RS256',
+    expiresIn: params.expiresIn || '1h',
   });
 }

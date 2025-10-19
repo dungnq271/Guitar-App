@@ -18,8 +18,8 @@ export class UserController {
     await authService.refreshJwt(req, res);
   }
 
-  static async getUsers(res: Response) {
-    await userService.getUsers(res);
+  static async getAll(res: Response) {
+    await userService.getAll(res);
   }
 
   static async getProfile(req: Request, res: Response) {

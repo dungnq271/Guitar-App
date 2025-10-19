@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { body, validationResult } from "express-validator";
+import {
+  body,
+  FieldValidationError,
+  validationResult,
+} from "express-validator";
 import { AppDataSource } from "../data-source";
 import { User } from "../entity/User";
 
@@ -34,7 +38,7 @@ export const validate = (req: Request, res: Response, next: NextFunction) => {
     // Group errors by field name
     const formattedErrors = {};
 
-    errors.array().forEach((error) => {
+    errors.array().forEach((error: FieldValidationError) => {
       if (!formattedErrors[error.path]) {
         formattedErrors[error.path] = [];
       }

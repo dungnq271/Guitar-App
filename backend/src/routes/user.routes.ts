@@ -4,9 +4,9 @@ import passport = require("passport");
 
 const userRouter = Router();
 
-userRouter.get("/all", UserController.getUsers);
+userRouter.get("/all", UserController.getAll);
 userRouter.post(
-  "/",
+  "/:id?",
   // TODO: uncomment this
   // passport.authenticate("jwt", { session: false }),
   UserController.getProfile,

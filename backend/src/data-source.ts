@@ -1,26 +1,48 @@
-import "reflect-metadata";
-import { DataSource } from "typeorm";
-import { Redis } from "ioredis";
-import { User } from "./entity/User";
-import config from "./config/config";
+import 'reflect-metadata';
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { Redis } from 'ioredis';
+import { User } from './entity/User';
+import envConfig from './config/envConfig';
 
-export const AppDataSource = new DataSource({
-  type: "postgres",
-  host: config.postgresHost,
-  port: config.postgresPort,
-  username: config.postgresUser,
-  password: config.postgresPassword,
-  database: config.postgresDB,
+// Make sure to set this to false in production
+const syncDatabase = true;
+
+const databaseConfig: DataSourceOptions = {
+  type: 'postgres',
+  host: envConfig.POSTGRES_HOST,
+  port: envConfig.POSTGRES_PORT,
+  username: envConfig.POSTGRES_USER,
+  password: envConfig.POSTGRES_PASSWORD,
+  database: envConfig.POSTGRES_DB,
   synchronize: true,
   logging: false,
-  entities: [User],
-  migrations: [__dirname + "/migration/*.ts"],
-  migrationsTableName: "ecm-postgres",
+  entities: syncDatabase ? ['src/entities/**/*.ts'] : ['dist/entities/**/*.js'],
+  migrations: syncDatabase
+    ? ['src/migrations/**/*.ts']
+    : ['dist/migrations/**/*.js'],
+  migrationsTableName: 'ecm-postgres',
   subscribers: [],
-});
+};
+
+export const testDatabaseConfig: DataSourceOptions = {
+  type: 'postgres',
+  host: 'localhost',
+  port: 2345,
+  username: 'root',
+  database: 'test',
+  password: 'easypass',
+  synchronize: true,
+  dropSchema: true,
+  entities: syncDatabase ? ['src/entities/**/*.ts'] : ['dist/entities/**/*.js'],
+};
+
+const AppDataSource = new DataSource(databaseConfig);
+const TestDataSource = new DataSource(testDatabaseConfig);
 
 export const redisClient = new Redis({
-  port: config.redisPort,
-  host: config.redisHost,
-  password: config.redisPassword,
+  port: envConfig.REDIS_PORT,
+  host: envConfig.REDIS_HOST,
+  password: envConfig.REDIS_PASSWORD,
 });
+
+export default { AppDataSource, TestDataSource };
