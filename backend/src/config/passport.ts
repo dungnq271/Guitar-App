@@ -1,8 +1,7 @@
 import { Request } from 'express';
-import { AppDataSource } from '../data-source';
-import { User } from '../entity/User';
+import dataSource from '../data-source';
+import { User } from '../entities/User.postgres';
 import { sha256 } from '../lib/jwt';
-import { parse } from 'cookie';
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 import fs = require('fs');
@@ -22,18 +21,14 @@ const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: PUB_KEY,
   algorithms: ['RS256'],
-  passReqToCallback: true,
+  passReqToCallback: true
 };
 
 // app.js will pass the global passport object here, and this function will configure it
 module.exports = (passport) => {
   // The JWT payload is passed into the verify callback
   passport.use(
-    new JwtStrategy(options, function (
-      req: Request,
-      jwt_payload: Payload,
-      done
-    ) {
+    new JwtStrategy(options, function (req: Request, jwt_payload: Payload, done) {
       const { fingerprintHash } = req.body;
 
       const fingerprintCookie = req.cookies[FINGERPRINT_COOKIE_NAME];
@@ -50,7 +45,7 @@ module.exports = (passport) => {
       }
 
       delete req.body.fingerprintHash;
-      const userRepository = AppDataSource.getRepository(User);
+      const userRepository = dataSource.AppDataSource.getRepository(User);
 
       console.log('everything done');
 

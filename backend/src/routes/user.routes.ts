@@ -1,21 +1,21 @@
-import { Router } from "express";
-import { UserController } from "../controller/UserController";
-import passport = require("passport");
+import { Router } from 'express';
+import { UserController } from '../controller/UserController';
+import passport = require('passport');
 
 const userRouter = Router();
 
-userRouter.get("/all", UserController.getAll);
+userRouter.get('/all', UserController.getAll);
 userRouter.post(
-  "/:id?",
+  '/:id?',
   // TODO: uncomment this
   // passport.authenticate("jwt", { session: false }),
-  UserController.getProfile,
+  UserController.getProfile
 );
 userRouter.post(
-  "/update",
-  passport.authenticate("jwt", { session: false }),
-  UserController.updateUser,
+  '/update',
+  passport.authenticate('jwt', { session: false }),
+  UserController.updateUser
 );
-userRouter.post("/delete/:id", UserController.deleteUser);
+userRouter.post('/delete/:id', UserController.deleteUser);
 
 export default userRouter;

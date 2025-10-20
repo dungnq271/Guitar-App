@@ -4,7 +4,7 @@ import { containerExec, imageExists, pullImageAsync } from 'dockerode-utils';
 
 export { containerExec } from 'dockerode-utils';
 
-const CONTAINER_IMAGE = 'postgres:16.10-alpine';
+const CONTAINER_IMAGE = 'postgres:16-alpine';
 const CONTAINER_NAME = 'typeorm-test';
 
 export const removePostgresContainer = async (): Promise<void> => {
@@ -34,26 +34,19 @@ export const ensureDatabaseExistence = async (
   await containerExec(container, [
     'bash',
     '-c',
-    `until psql -U ${user} -t -c "SELECT datname FROM pg_catalog.pg_database WHERE datname='${database}'" | grep ${database} ; do echo "waiting ${database} db to be created"; sleep 1 ; done`,
+    `until psql -U ${user} -t -c "SELECT datname FROM pg_catalog.pg_database WHERE datname='${database}'" | grep ${database} ; do echo "waiting ${database} db to be created"; sleep 1 ; done`
   ]);
 };
 
-const ensurePgServiceReadiness = async (
-  container: Docker.Container,
-  user: string
-) => {
+const ensurePgServiceReadiness = async (container: Docker.Container, user: string) => {
   await containerExec(container, [
     'bash',
     '-c',
-    `until psql -U ${user} -c "SELECT 1" > /dev/null 2>&1 ; do echo "waiting pg service to be ready"; sleep 1; done`,
+    `until psql -U ${user} -c "SELECT 1" > /dev/null 2>&1 ; do echo "waiting pg service to be ready"; sleep 1; done`
   ]);
 };
 
-export const setupPostgresContainer = async (
-  user: string,
-  password: string,
-  port: string
-) => {
+export const setupPostgresContainer = async (user: string, password: string, port: string) => {
   const docker = new Docker();
   const needsToPull = !(await imageExists(docker, CONTAINER_IMAGE));
 
@@ -62,23 +55,19 @@ export const setupPostgresContainer = async (
   await removePostgresContainer();
 
   const container = await docker.createContainer({
-    Env: [
-      `POSTGRES_PASSWORD=${password}`,
-      `POSTGRES_USER=${user}`,
-      'NODE_ENV=test',
-    ],
+    Env: [`POSTGRES_PASSWORD=${password}`, `POSTGRES_USER=${user}`, 'NODE_ENV=test'],
     HostConfig: {
       PortBindings: {
         '5432/tcp': [
           {
-            HostPort: port,
-          },
-        ],
-      },
+            HostPort: port
+          }
+        ]
+      }
     },
     ExposedPorts: { '5432/tcp': {} },
     Image: CONTAINER_IMAGE,
-    name: CONTAINER_NAME,
+    name: CONTAINER_NAME
   });
   await container.start();
 

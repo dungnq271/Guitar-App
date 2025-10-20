@@ -4,8 +4,9 @@ import { DataSource } from 'typeorm';
 
 import { Server, createServer } from 'node:http';
 import { createDatabase } from 'typeorm-extension';
+import { Redis } from 'ioredis';
 
-import dataSource, { testDatabaseConfig } from '../data-source';
+import dataSource, { testPostgresDBConfig, testRedisConfig } from '../data-source';
 import userRouter from '../routes/user.routes';
 import authRouter from '../routes/auth.routes';
 import guitarRouter from '../routes/guitar.routes';
@@ -28,15 +29,21 @@ export class TestFactory {
     await this._connection.destroy();
   }
 
+  private async createDatabase() {
+    await createDatabase({
+      options: {
+        type: 'postgres' as const,
+        ...testPostgresDBConfig
+      }
+    });
+    const client = new Redis(testRedisConfig);
+  }
+
   private async startup(): Promise<void> {
     try {
       this._connection = dataSource.TestDataSource;
-      await createDatabase({
-        options: {
-          type: 'postgres' as const,
-          ...testDatabaseConfig
-        }
-      });
+      await this.createDatabase();
+
       await this._connection.initialize();
       this._app = express();
       this._app.use(express.json());

@@ -3,17 +3,22 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-} from "typeorm";
+  UpdateDateColumn
+} from 'typeorm';
 
-export enum UserRole {
-  ADMIN = "admin",
-  USER = "user",
-}
+// export enum UserRole {
+//   ADMIN = 'admin',
+//   USER = 'user'
+// }
+const UserRole = {
+  ADMIN: 'admin',
+  USER: 'user'
+} as const;
+type UserRole = (typeof UserRole)[keyof typeof UserRole];
 
-@Entity({ name: "users" })
+@Entity({ name: 'user' })
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ nullable: false })
@@ -32,9 +37,9 @@ export class User {
   password: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: UserRole,
-    default: UserRole.USER,
+    default: UserRole.USER
   })
   role: string;
 

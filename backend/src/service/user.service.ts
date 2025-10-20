@@ -1,13 +1,12 @@
-import { Request, Response } from "express";
-import { Repository } from "typeorm";
-import { User } from "../entity/User";
+import { Request, Response, NextFunction } from 'express';
+import { Repository } from 'typeorm';
+import { User } from '../entities/User.postgres';
 
 export class UserService {
   constructor(private readonly userRepository: Repository<User>) {}
 
-  async getAll(res: Response) {
+  async getAll(res: Response, next: NextFunction) {
     const users = await this.userRepository.find();
-    console.log(users);
     res.status(200).json({ success: true, users });
   }
 
@@ -17,12 +16,10 @@ export class UserService {
 
     try {
       user = await this.userRepository.findOne({
-        where: { id },
+        where: { id }
       });
     } catch (err) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User not found" });
+      return res.status(400).json({ success: false, message: 'User not found' });
     }
     res.status(200).json({ success: true, user });
   }
@@ -31,15 +28,15 @@ export class UserService {
     let user = req.user as User;
     user = { ...user, ...req.body };
     await this.userRepository.save(user);
-    res.status(200).json({ success: true, message: "updated", user });
+    res.status(200).json({ success: true, message: 'updated', user });
   }
 
   async deleteUser(req: Request, res: Response) {
     const { id } = req.params;
     const user = await this.userRepository.findOne({
-      where: { id },
+      where: { id }
     });
     await this.userRepository.remove(user);
-    res.status(200).json({ success: true, message: "ok" });
+    res.status(200).json({ success: true, message: 'ok' });
   }
 }

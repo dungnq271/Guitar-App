@@ -1,11 +1,8 @@
-import fs = require('fs');
-import path = require('path');
-import { loadEnv } from '../lib/loadEnv';
-
-loadEnv();
+import fs from 'fs';
+import path from 'path';
+import 'dotenv/config';
 
 const pathToKey = path.join(__dirname, '..', '..', 'id_rsa_priv.pem');
-const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 type EnvConfig = {
   PORT: number;
@@ -32,17 +29,17 @@ const getConfig = (): ENV => ({
   PORT: Number(process.env.PORT),
   NODE_ENV: process.env.NODE_ENV,
 
-  POSTGRES_HOST: process.env.POSTGRES_HOST || '5000',
-  POSTGRES_PORT: Number(process.env.POSTGRES_PORT) || 80,
-  POSTGRES_USER: process.env.POSTGRES_USER || 'postgres',
-  POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || 'postgres',
-  POSTGRES_DB: process.env.POSTGRES_DB || 'postgres',
+  POSTGRES_HOST: process.env.POSTGRES_HOST,
+  POSTGRES_PORT: Number(process.env.POSTGRES_PORT),
+  POSTGRES_USER: process.env.POSTGRES_USER,
+  POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
+  POSTGRES_DB: process.env.POSTGRES_DB,
 
-  REDIS_HOST: process.env.REDIS_HOST || '',
-  REDIS_PORT: Number(process.env.REDIS_PORT) || 6379,
-  REDIS_PASSWORD: process.env.REDIS_PASSWORD || '',
+  REDIS_HOST: process.env.REDIS_HOST,
+  REDIS_PORT: Number(process.env.REDIS_PORT),
+  REDIS_PASSWORD: process.env.REDIS_PASSWORD,
 
-  JWT_SECRET: process.env.jwtSecret || PRIV_KEY,
+  JWT_SECRET: process.env.jwtSecret || fs.readFileSync(pathToKey, 'utf8')
 });
 
 const getSanitizedConfig = (config: ENV): EnvConfig => {

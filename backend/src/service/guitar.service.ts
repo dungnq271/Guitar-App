@@ -1,27 +1,27 @@
-import { Request } from "express";
+import { Request } from 'express';
 // import { Repository } from "typeorm";
-import guitars from "../example-guitars";
-import * as cache from "memory-cache";
+import guitars from '../example-guitars';
+import * as cache from 'memory-cache';
 
 export class GuitarService {
   // TODO: add guitar repository
   // constructor(private readonly guitarRepository: Repository<Guitar>) {}
 
   async listGuitars(req: Request) {
-    const data = cache.get("data");
+    const data = cache.get('data');
     if (data) {
-      console.log("serving from cache");
+      console.log('serving from cache');
       return {
-        data,
+        data
       };
     } else {
-      console.log("serving from db");
+      console.log('serving from db');
       return {
         success: true,
         data: guitars.map((guitar) => ({
           ...guitar,
-          image: `${req.protocol}://${req.get("host")}${guitar.image}`,
-        })),
+          image: `${req.protocol}://${req.get('host')}${guitar.image}`
+        }))
       };
     }
   }
@@ -38,13 +38,13 @@ export class GuitarService {
     let guitar = guitars[index];
     guitar = { ...guitar, ...req.body };
     guitars[index] = guitar;
-    return { success: true, message: "updated", data: guitar };
+    return { success: true, message: 'updated', data: guitar };
   }
 
   async deleteGuitar(req: Request) {
     // @ts-ignore
     const guitarIndex = guitars[req.guitarIndex];
     guitars.splice(+guitarIndex, 1);
-    return { success: true, message: "deleted" };
+    return { success: true, message: 'deleted' };
   }
 }

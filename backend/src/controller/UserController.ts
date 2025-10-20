@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { userService, authService } from "../repository";
+import { NextFunction, Request, Response } from 'express';
+import { userService, authService } from '../repository';
 
 export class UserController {
   static async protected(req: Request, res: Response) {
@@ -18,8 +18,8 @@ export class UserController {
     await authService.refreshJwt(req, res);
   }
 
-  static async getAll(res: Response) {
-    await userService.getAll(res);
+  static async getAll(req: Request, res: Response, next: NextFunction) {
+    await userService.getAll(res, next);
   }
 
   static async getProfile(req: Request, res: Response) {

@@ -1,5 +1,6 @@
-import { removePostgresContainer } from '../../utils/docker';
+import { removePostgresContainer } from '../../utils/docker/postgres';
+import { removeRedisContainer } from '../../utils/docker/redis';
 
 export default async () => {
-  await removePostgresContainer();
+  await Promise.all([removePostgresContainer(), removeRedisContainer()]);
 };

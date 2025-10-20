@@ -1,7 +1,6 @@
 import { EntityTarget, Repository } from 'typeorm';
-
+import dataSource from '../data-source';
 import envConfig from '../config/envConfig';
-import dataSource from '../Projects/Web-Development/Projects/Guitar-App/backend/src/data-source';
 
 const handleGetRepository = <T>(entity: EntityTarget<T>): Repository<T> => {
   const environment = envConfig.NODE_ENV || 'development';

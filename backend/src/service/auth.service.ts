@@ -1,30 +1,30 @@
-import { Request, Response } from "express";
-import { Repository } from "typeorm";
-const crypto = require("crypto");
+import { Request, Response } from 'express';
+import { Repository } from 'typeorm';
+const crypto = require('crypto');
 
-import { checkPassword, hashPassword } from "../lib/password";
+import { checkPassword, hashPassword } from '../lib/password';
 import {
   setFingerprintCookieAndSignJwt,
-  FINGERPRINT_COOKIE_NAME,
-} from "../lib/setFingerprintCookieAndSignJwt";
-import { generateJwt, sha256 } from "../lib/jwt";
-import { uuidv4 } from "../lib/auth";
-import { parse } from "cookie";
+  FINGERPRINT_COOKIE_NAME
+} from '../lib/setFingerprintCookieAndSignJwt';
+import { generateJwt, sha256 } from '../lib/jwt';
+import { uuidv4 } from '../lib/auth';
+import { parse } from 'cookie';
 import {
   maxWrongAttemptsByIPperDay,
   maxConsecutiveFailsByUsernameAndIP,
   limiterConsecutiveFailsByUsernameAndIP,
   limiterSlowBruteByIP,
-  getUsernameIPkey,
-} from "../config/rateLimiter";
-import { User } from "../entity/User";
+  getUsernameIPkey
+} from '../config/rateLimiter';
+import { User } from '../entities/User.postgres';
 
 export class AuthService {
   constructor(private readonly userRepository: Repository<User>) {}
 
   async protected(res: Response) {
     res.status(200).json({
-      message: "You are successfully authenticated to this route!",
+      message: 'You are successfully authenticated to this route!'
     });
   }
 
@@ -32,12 +32,13 @@ export class AuthService {
     const { firstName, lastName, username, email, password } = req.body;
 
     const user = new User();
+
     user.firstName = firstName;
     user.lastName = lastName;
     user.username = username;
     user.email = email;
     user.password = await hashPassword(password);
-    user.profilePicUrl = "https://localhost:3000/my-pic.png";
+    user.profilePicUrl = 'https://localhost:3000/my-pic.png';
 
     const jwt = this.issueJwt(res, user);
     const refreshToken = this.generateRefreshToken(user);
@@ -45,16 +46,16 @@ export class AuthService {
     try {
       await this.userRepository.save(user);
     } catch (err) {
-      console.log("/auth/register endpoint error", err);
-      res.status(400).json({ success: false, message: "Error signing up" });
+      console.log('/auth/register endpoint error', err);
+      res.status(400).json({ success: false, message: 'Error signing up' });
     }
 
     res.status(200).json({
       success: true,
-      message: "User registered successfully",
+      message: 'User registered successfully',
       jwt,
       refreshToken,
-      userId: user.id,
+      userId: user.id
     });
   }
 
@@ -65,16 +66,13 @@ export class AuthService {
 
     const [resUsernameAndIP, resSlowByIP] = await Promise.all([
       limiterConsecutiveFailsByUsernameAndIP.get(usernameIPkey),
-      limiterSlowBruteByIP.get(ipAddr),
+      limiterSlowBruteByIP.get(ipAddr)
     ]);
 
     let retrySecs = 0;
 
     // Check if IP or Username + IP is already blocked
-    if (
-      resSlowByIP !== null &&
-      resSlowByIP.consumedPoints > maxWrongAttemptsByIPperDay
-    ) {
+    if (resSlowByIP !== null && resSlowByIP.consumedPoints > maxWrongAttemptsByIPperDay) {
       retrySecs = Math.round(resSlowByIP.msBeforeNext / 1000) || 1;
     } else if (
       resUsernameAndIP !== null &&
@@ -84,14 +82,14 @@ export class AuthService {
     }
 
     if (retrySecs > 0) {
-      res.set("Retry-After", String(retrySecs));
-      res.status(429).send("Too Many Requests");
+      res.set('Retry-After', String(retrySecs));
+      res.status(429).send('Too Many Requests');
     } else {
       try {
         const user = await this.userRepository.findOne({ where: { email } });
         if (!user) {
           await limiterSlowBruteByIP.consume(ipAddr);
-          res.status(400).json({ success: false, message: "User not found" });
+          res.status(400).json({ success: false, message: 'User not found' });
         } else {
           const isValid = await checkPassword(password, user.password);
           if (isValid) {
@@ -101,41 +99,33 @@ export class AuthService {
             await this.userRepository.save(user);
 
             // Reset on successful authorisation
-            if (
-              resUsernameAndIP !== null &&
-              resUsernameAndIP.consumedPoints > 0
-            ) {
-              await limiterConsecutiveFailsByUsernameAndIP.delete(
-                usernameIPkey,
-              );
+            if (resUsernameAndIP !== null && resUsernameAndIP.consumedPoints > 0) {
+              await limiterConsecutiveFailsByUsernameAndIP.delete(usernameIPkey);
             }
 
             res.status(200).json({
               success: true,
-              message: "User login successfully",
+              message: 'User login successfully',
               jwt,
               refreshToken,
-              user,
+              user
             });
           } else {
             // username exists but not logged in
             await Promise.all([
               limiterSlowBruteByIP.consume(ipAddr),
-              limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey),
+              limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey)
             ]);
-            res.status(400).json({ success: false, message: "Wrong password" });
+            res.status(400).json({ success: false, message: 'Wrong password' });
           }
         }
       } catch (err) {
         console.log(err);
         if (err instanceof Error) {
-          res.status(400).json({ success: false, message: "Error logging in" });
+          res.status(400).json({ success: false, message: 'Error logging in' });
         } else {
-          res.set(
-            "Retry-After",
-            String(Math.round(err.msBeforeNext / 1000)) || "1",
-          );
-          res.status(429).send("Too Many Requests");
+          res.set('Retry-After', String(Math.round(err.msBeforeNext / 1000)) || '1');
+          res.status(429).send('Too Many Requests');
         }
       }
     }
@@ -144,14 +134,10 @@ export class AuthService {
   async refreshJwt(req: Request, res: Response) {
     const { refreshToken, fingerprintHash } = req.params;
 
-    const fingerprintCookie = parse(req.headers.cookie)[
-      FINGERPRINT_COOKIE_NAME
-    ];
+    const fingerprintCookie = parse(req.headers.cookie)[FINGERPRINT_COOKIE_NAME];
     console.log({ fingerprintCookie });
     if (!fingerprintCookie)
-      res
-        .status(400)
-        .json({ success: false, message: "Unable to refresh JWT token" });
+      res.status(400).json({ success: false, message: 'Unable to refresh JWT token' });
 
     // Compute a SHA256 hash of the received fingerprint in cookie in order to compare
     // it to the fingerprint hash stored in the token
@@ -159,35 +145,31 @@ export class AuthService {
     console.log({ fingerprintCookie, fingerprintCookieHash, fingerprintHash });
 
     if (fingerprintHash != fingerprintCookieHash) {
-      res
-        .status(400)
-        .json({ success: false, message: "Unable to refresh JWT token" });
+      res.status(400).json({ success: false, message: 'Unable to refresh JWT token' });
     }
 
     return this.userRepository
       .findOne({ where: { refreshToken } })
       .then((user) => {
         if (!user) {
-          res.status(400).json({ success: false, message: "User not found" });
+          res.status(400).json({ success: false, message: 'User not found' });
         }
 
         this.generateRefreshToken(user);
         const jwt = generateJwt({
-          expiresIn: "5m",
-          allowedRoles: ["user"],
-          defaultRole: "user",
+          expiresIn: '5m',
+          allowedRoles: ['user'],
+          defaultRole: 'user',
           otherClaims: {
-            "X-User-Id": String(user.id),
+            'X-User-Id': String(user.id)
             // TODO: why not hashing fingerprint
-          },
+          }
         });
         res.status(200).json({ success: true, jwt });
       })
       .catch((err) => {
         console.log(err);
-        res
-          .status(400)
-          .json({ success: false, message: "Error issuing jwt token refresh" });
+        res.status(400).json({ success: false, message: 'Error issuing jwt token refresh' });
       });
   }
 
@@ -200,7 +182,7 @@ export class AuthService {
 
   issueJwt(res: Response, user: User) {
     // Generate a random string that will constitute the fingerprint for this user
-    const fingerprint = crypto.randomBytes(50).toString("hex");
+    const fingerprint = crypto.randomBytes(50).toString('hex');
 
     // Add the fingerprint in a hardened cookie to prevent Token Sidejacking
     // https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html#token-sidejacking
