@@ -19,6 +19,7 @@ export async function login(data: object) {
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
   });
   return response;
 }
@@ -28,6 +29,7 @@ export async function getUser(data: object) {
     headers: {
       "Content-Type": "application/json",
     },
+    withCredentials: true,
   });
   return response;
 }

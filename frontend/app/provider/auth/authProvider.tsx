@@ -56,6 +56,18 @@ const AuthProvider = ({ children }: Props) => {
   );
 
   useEffect(() => {
+    if (jwt) {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
+      /* driver.set("jwt", jwt);
+       * driver.set("refreshToken", refreshToken); */
+    } else {
+      delete axios.defaults.headers.common["Authorization"];
+      /* driver.set("jwt", "");
+       * driver.set("refreshToken", ""); */
+    }
+  }, [jwt, refreshToken]);
+
+  useEffect(() => {
     if (jwt && user.id === -1) {
       const parsedJwt = parseJwt(jwt as string);
       const fingerprintHash = parsedJwt?.["X-User-Fingerprint"];
@@ -70,18 +82,6 @@ const AuthProvider = ({ children }: Props) => {
         });
     }
   }, [jwt]);
-
-  useEffect(() => {
-    if (jwt) {
-      axios.defaults.headers.common["Authorization"] = "Bearer " + jwt;
-      /* driver.set("jwt", jwt);
-       * driver.set("refreshToken", refreshToken); */
-    } else {
-      delete axios.defaults.headers.common["Authorization"];
-      /* driver.set("jwt", "");
-       * driver.set("refreshToken", ""); */
-    }
-  }, [jwt, refreshToken]);
 
   // Provide the authentication context to the children components
   return (

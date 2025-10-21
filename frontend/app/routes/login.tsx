@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Form, Link, useNavigate } from "react-router";
 import { login } from "~/utils/apis";
 import { useAuth } from "~/provider/auth/authProvider";
+import type { AxiosError } from "axios";
 import "./login.css";
 
 export default function SignInPage() {
@@ -18,17 +19,14 @@ export default function SignInPage() {
 
     try {
       const response = await login(parsedData);
-      if (!response.data.success) {
-        setErrorMsg(response.data.message);
-      } else {
-        setUser(response.data.user);
-        setJwt(response.data.jwt);
-        setRefreshToken(response.data.refreshToken);
-
-        navigate("/");
+      setUser(response.data.user);
+      setJwt(response.data.jwt);
+      setRefreshToken(response.data.refreshToken);
+      navigate("/");
+    } catch (err: AxiosError) {
+      if (err.response?.data) {
+        setErrorMsg(err.response.data.message);
       }
-    } catch (err) {
-      console.log(err);
     }
   }
 
@@ -39,7 +37,7 @@ export default function SignInPage() {
           <h1>Sign in</h1>
         </div>
         <Form id="login-form" method="post" onSubmit={handleSubmit}>
-          {errorMsg && <p id="error">{errorMsg}</p>}
+          {errorMsg && <p className="err">{errorMsg}</p>}
           <div id="email">
             <p>Username or email address</p>
             <input name="email" />

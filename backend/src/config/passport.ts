@@ -8,6 +8,7 @@ import fs = require('fs');
 import path = require('path');
 import { Payload } from '../dto/user.dto';
 import { FINGERPRINT_COOKIE_NAME } from '../lib/setFingerprintCookieAndSignJwt';
+import handleGetRepository from '../utils/handleGetRepository';
 
 // Go up one directory, then look for file name
 const pathToKey = path.join(__dirname, '..', '..', 'id_rsa_pub.pem');
@@ -23,6 +24,8 @@ const options = {
   algorithms: ['RS256'],
   passReqToCallback: true
 };
+
+const userRepository = handleGetRepository(User);
 
 // app.js will pass the global passport object here, and this function will configure it
 module.exports = (passport) => {
@@ -45,9 +48,6 @@ module.exports = (passport) => {
       }
 
       delete req.body.fingerprintHash;
-      const userRepository = dataSource.AppDataSource.getRepository(User);
-
-      console.log('everything done');
 
       // We will assign the `sub` property on the JWT to the database ID of user
       userRepository
@@ -55,6 +55,7 @@ module.exports = (passport) => {
         .then((user) => {
           if (user) {
             // Since we are here, the JWT is valid and our user is valid, so we are authorized!
+            req.user = user;
             return done(null, user);
           } else {
             return done(null, false);

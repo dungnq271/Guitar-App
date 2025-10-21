@@ -10,20 +10,13 @@ const redisConnectionConfig: RedisOptions = { ...testRedisConfig };
 
 export default async () => {
   if ('username' in postgresConnectionConfig) {
-    // await Promise.all([
-    //   setupPostgresContainer(
-    //     postgresConnectionConfig.username,
-    //     postgresConnectionConfig.password as string,
-    //     postgresConnectionConfig.port.toString()
-    //   ),
-    //   setupRedisContainer(redisConnectionConfig.port.toString())
-    // ]);
-
-    await setupPostgresContainer(
-      postgresConnectionConfig.username,
-      postgresConnectionConfig.password as string,
-      postgresConnectionConfig.port.toString()
-    );
-    await setupRedisContainer(redisConnectionConfig.port.toString());
+    await Promise.all([
+      setupPostgresContainer(
+        postgresConnectionConfig.username,
+        postgresConnectionConfig.password as string,
+        postgresConnectionConfig.port.toString()
+      ),
+      setupRedisContainer(redisConnectionConfig.port.toString())
+    ]);
   }
 };

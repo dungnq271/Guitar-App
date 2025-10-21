@@ -15,7 +15,8 @@ export function setFingerprintCookieAndSignJwt(fingerprint: string, res: Respons
       maxAge: FINGERPRINT_COOKIE_MAX_AGE,
       httpOnly: true,
       // sameSite: "strict",        // TODO: config this
-      secure: envConfig.NODE_ENV === 'production'
+      secure: envConfig.NODE_ENV === 'production',
+      partitioned: envConfig.NODE_ENV === 'production'
     })
   );
 

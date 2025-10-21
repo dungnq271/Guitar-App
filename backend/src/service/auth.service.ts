@@ -40,8 +40,7 @@ export class AuthService {
     user.password = await hashPassword(password);
     user.profilePicUrl = 'https://localhost:3000/my-pic.png';
 
-    const jwt = this.issueJwt(res, user);
-    const refreshToken = this.generateRefreshToken(user);
+    this.generateRefreshToken(user);
 
     try {
       await this.userRepository.save(user);
@@ -52,10 +51,7 @@ export class AuthService {
 
     res.status(200).json({
       success: true,
-      message: 'User registered successfully',
-      jwt,
-      refreshToken,
-      userId: user.id
+      message: 'User registered successfully'
     });
   }
 

@@ -8,7 +8,7 @@ userRouter.get('/all', UserController.getAll);
 userRouter.post(
   '/:id?',
   // TODO: uncomment this
-  // passport.authenticate("jwt", { session: false }),
+  passport.authenticate('jwt', { session: false }),
   UserController.getProfile
 );
 userRouter.post(

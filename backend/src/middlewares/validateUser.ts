@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { body, FieldValidationError, validationResult } from 'express-validator';
-import dataSource from '../data-source';
 import { User } from '../entities/User.postgres';
+import handleGetRepository from '../utils/handleGetRepository';
 
-const userRepository = dataSource.AppDataSource.getRepository(User);
+const userRepository = handleGetRepository(User);
 
 export const validateUsername = body('username').notEmpty().withMessage('Username is required');
 
@@ -16,6 +16,8 @@ export const validateEmail = body('email')
   .withMessage('Please provide a valid email address'); // Custom error message
 
 export const validatePassword = body('password')
+  .notEmpty()
+  .withMessage('Password must not be empty')
   .isLength({ min: 8 })
   .withMessage('Password must be at least 8 characters long')
   .matches(/[A-Z]/)
@@ -53,14 +55,12 @@ export const validate = (req: Request, res: Response, next: NextFunction) => {
 export const checkRegisterDataExist = (req: Request, res: Response, next: NextFunction) => {
   const { username, email } = req.body;
 
-  console.log(userRepository.manager.connection);
-
   userRepository
     .findOne({ where: { username } })
     .then((user) => {
       if (user) {
-        res.status(200).json({ success: false, message: 'Username already existed!' });
-        return Promise.reject('Username already existed');
+        res.status(400).json({ success: false, message: 'Username already exists' });
+        return Promise.reject('Username already exists');
         // next("Username already existed");
       } else {
         return userRepository.findOne({ where: { email } });
@@ -68,8 +68,8 @@ export const checkRegisterDataExist = (req: Request, res: Response, next: NextFu
     })
     .then((user) => {
       if (user) {
-        res.status(200).json({ success: false, message: 'Email already existed!' });
-        return Promise.reject('Email already existed');
+        res.status(400).json({ success: false, message: 'Email already in use' });
+        return Promise.reject('Email already in use');
       } else {
         next();
       }

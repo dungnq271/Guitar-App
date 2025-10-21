@@ -12,7 +12,11 @@ export class UserService {
 
   async getProfile(req: Request, res: Response) {
     const { id } = req.params;
-    let user;
+    let user = req.user;
+
+    if (user) {
+      return res.status(200).json({ success: true, user });
+    }
 
     try {
       user = await this.userRepository.findOne({

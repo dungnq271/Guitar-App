@@ -4,22 +4,10 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { RedisOptions } from 'ioredis';
 import { Redis } from 'ioredis';
 import envConfig from './config/envConfig';
-import { User } from './entities/User.postgres';
 
 // Make sure to set this to false in production
 const syncDatabase = true;
-// const entities = syncDatabase ? [__dirname + '/../entities/*.js'] : ['dist/entities/**/*.js'];
-// const entities = [User];
-// const entities = syncDatabase ? [__dirname + '/../**/entities/*.ts'] : ['dist/entities/**/*.js'];
-const entities = syncDatabase
-  ? [join(__dirname, '..', '/**/entities/*.{js,ts}')]
-  : ['dist/entities/**/*.js'];
-// const entities = syncDatabase ? [__dirname + '/../**/entities/*.js'] : ['dist/entities/**/*.js'];
-// const entities = syncDatabase ? ['./src/entities/*.js'] : ['dist/entities/**/*.js'];
-// const entities = syncDatabase ? ['src/entities/*.ts'] : ['dist/entities/**/*.js'];
-// const entities = syncDatabase ? ['src/entities/*.ts'] : ['dist/entities/**/*.js'];
-
-console.log(entities);
+const entities = syncDatabase ? ['src/entities/*.ts'] : ['dist/entities/**/*.js'];
 
 // POSTGRES
 const postgresDBConfig: DataSourceOptions = {

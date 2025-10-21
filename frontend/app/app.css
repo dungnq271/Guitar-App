@@ -55,6 +55,10 @@ body {
   }
 }
 
+.err {
+  color: #e64646;
+}
+
 #error main {
   padding: 16px 4px 4px 4px;
   margin-inline: auto;
@@ -77,6 +81,10 @@ pre {
 
 header {
   grid-area: alias-header;
+}
+
+.required-mark {
+  color: rgba(255, 0, 0, 0.7);
 }
 
 .modal-bg {
