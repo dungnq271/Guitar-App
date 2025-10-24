@@ -1,10 +1,9 @@
-import { Link } from "react-router";
-import { createPortal } from "react-dom";
-import type { Route } from "./+types/$guitarId";
-import { fetchGuitars } from "../utils/apis";
-import { type Guitar } from "~/utils/models";
-import { useState } from "react";
-import "./$guitarId.css";
+import { Link } from 'react-router';
+import type { Route } from './+types/Guitar';
+import { fetchGuitars } from '../utils/apis';
+import { type Guitar } from '~/utils/models';
+import { useState } from 'react';
+import './Guitar.css';
 
 interface ModalProps {
   isShown: boolean;
@@ -14,7 +13,7 @@ export async function clientLoader({ params }: Route.LoaderArgs) {
   const guitars = await fetchGuitars();
   const guitar = guitars.find((guitar) => guitar.id === +params.guitarId);
   if (!guitar) {
-    throw new Error("Guitar not found");
+    throw new Error('Guitar not found');
   }
   return guitar;
 }
@@ -46,7 +45,7 @@ export default function Guitars({ loaderData }: Route.ComponentProps) {
       </div>
       <div id="full-img-panel">
         <div id="full-img-div">
-          <img id="full-img" src={guitar.image} alt={guitar.name} />
+          <img id="full-img" src={`../${guitar.image}`} alt={guitar.name} />
         </div>
       </div>
       <Modal isShown={isAddCart} />

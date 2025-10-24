@@ -1,6 +1,6 @@
-import { Outlet, useNavigate, Navigate } from "react-router";
-import { useEffect, useLayoutEffect } from "react";
-import { useAuth } from "~/provider/auth/authProvider";
+import { Outlet, useNavigate, Navigate } from 'react-router';
+import { useEffect, useLayoutEffect } from 'react';
+import { useAuth } from '~/Providers/authProvider';
 
 export default function ProtectedRoute() {
   const { jwt } = useAuth();
@@ -9,7 +9,7 @@ export default function ProtectedRoute() {
   useLayoutEffect(() => {
     if (jwt) {
       /* console.log("navigate to /"); */
-      navigate("/");
+      navigate('/');
     }
   }, [jwt]);
 

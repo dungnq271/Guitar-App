@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Form, Link, useNavigate } from 'react-router';
 import { register } from '~/utils/apis';
-import './register.css';
+import './Register.css';
 import type { AxiosError } from 'axios';
 
 export default function RegisterPage() {
@@ -148,7 +148,7 @@ export default function RegisterPage() {
             </div>
             <div id="username">
               <p>
-                Username <span className="required-mark">*</span>
+                Username <span className="required-asterisk">*</span>
               </p>
               <input
                 name="username"
@@ -160,7 +160,7 @@ export default function RegisterPage() {
             </div>
             <div id="email">
               <p>
-                Email address <span className="required-mark">*</span>
+                Email address <span className="required-asterisk">*</span>
               </p>
               <input
                 name="email"
@@ -172,7 +172,7 @@ export default function RegisterPage() {
             </div>
             <div id="password">
               <p>
-                Password <span className="required-mark">*</span>
+                Password <span className="required-asterisk">*</span>
               </p>
               <input
                 name="password"
@@ -192,7 +192,7 @@ export default function RegisterPage() {
             </div>
             <div id="confirmPassword">
               <p>
-                Confirm password <span className="required-mark">*</span>
+                Confirm password <span className="required-asterisk">*</span>
               </p>
               <input
                 name="confirmPassword"
@@ -220,7 +220,7 @@ export default function RegisterPage() {
           </Form>
         </div>
         <div id="right-modal">
-          <img src="./app/images/guitars.jpg" />
+          <img src="./app/Images/guitars.jpg" />
         </div>
       </div>
     </div>

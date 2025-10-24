@@ -1,14 +1,14 @@
-import { Link, redirect } from "react-router";
-import type { Route } from "./+types/home";
-import { fetchGuitars } from "../utils/apis";
-import "./home.css";
+import { Link, redirect } from 'react-router';
+import type { Route } from './+types/Home';
+import { fetchGuitars } from '../utils/apis';
+import './Home.css';
 
 export async function clientLoader() {
   try {
     const guitars = await fetchGuitars();
     return guitars;
   } catch {
-    return redirect("/login");
+    return redirect('/login');
   }
 }
 
@@ -25,11 +25,7 @@ export default function Guitars({ loaderData }: Route.ComponentProps) {
               <Link to={`/guitars/${guitar.id.toString()}`}>
                 <div id="panel">
                   <div id="img-grid">
-                    <img
-                      src={guitar.image}
-                      alt={guitar.name}
-                      className="guitar-image"
-                    />
+                    <img src={guitar.image} alt={guitar.name} className="guitar-image" />
                     <div id="lining"></div>
                   </div>
                   <div id="action">View Details</div>

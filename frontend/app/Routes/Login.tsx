@@ -1,9 +1,9 @@
-import { useState, type FormEvent } from "react";
-import { Form, Link, useNavigate } from "react-router";
-import { login } from "~/utils/apis";
-import { useAuth } from "~/provider/auth/authProvider";
-import type { AxiosError } from "axios";
-import "./login.css";
+import { useState, type FormEvent } from 'react';
+import { Form, Link, useNavigate } from 'react-router';
+import { login } from '~/utils/apis';
+import { useAuth } from '~/Providers/authProvider';
+import type { AxiosError } from 'axios';
+import './Login.css';
 
 export default function SignInPage() {
   const [errorMsg, setErrorMsg] = useState<string>();
@@ -22,7 +22,7 @@ export default function SignInPage() {
       setUser(response.data.user);
       setJwt(response.data.jwt);
       setRefreshToken(response.data.refreshToken);
-      navigate("/");
+      navigate('/');
     } catch (err: AxiosError) {
       if (err.response?.data) {
         setErrorMsg(err.response.data.message);
@@ -61,7 +61,7 @@ export default function SignInPage() {
         </Form>
         <div id="create-account">
           <p>
-            New?{" "}
+            New?{' '}
             <Link id="to_register" to="/register">
               Create an account
             </Link>

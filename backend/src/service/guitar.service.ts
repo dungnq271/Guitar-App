@@ -11,7 +11,8 @@ export class GuitarService {
       success: true,
       data: guitars.map((guitar) => ({
         ...guitar,
-        image: `${req.protocol}://${req.get('host')}${guitar.image}`
+        // image: `${req.protocol}://${req.get('host')}${guitar.image}`
+        image: `app/Images${guitar.image}`
       }))
     };
   }

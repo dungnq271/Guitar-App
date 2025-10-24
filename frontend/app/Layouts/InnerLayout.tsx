@@ -1,5 +1,5 @@
-import { Outlet, useOutletContext } from "react-router";
-import Navbar from "./navbar";
+import { Outlet, useOutletContext } from 'react-router';
+import Navbar from './Navbar';
 
 interface ContextType {
   isMobile: boolean;

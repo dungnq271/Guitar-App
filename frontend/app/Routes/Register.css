@@ -1,4 +1,5 @@
 #register-page {
+  background-color: var(--color-background);
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -6,10 +7,10 @@
 }
 
 #register-page #modal {
-  background-color: #fff;
+  background-color: var(--color-main);
   padding: 0.5rem;
   height: 80%;
-  width: 80%;
+  width: 60%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +19,7 @@
 }
 
 #register-page #left-modal {
-  width: 100%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -65,41 +66,35 @@
 }
 
 #register-form div > input,
-button[type='submit'] {
+#register-form button[type='submit'] {
   border-radius: 6px;
   height: 40px;
 }
 
-#password > div {
+#register-form #password > div {
   display: flex;
   justify-content: space-between;
 }
 
 #register-form div > input,
-button[type='submit'] {
+#register-form button[type='submit'] {
   width: 420px;
 }
 
-button[type='submit'] {
-  background-color: var(--color-green-600);
+#register-form button[type='submit'] {
+  background-color: var(--color-submit-btn);
   font-size: 1rem;
+  font-weight: 500;
   opacity: 0.9;
   border: none;
 }
 
-button[type='submit']:hover {
+#register-form button[type='submit']:hover {
   opacity: 1;
 }
 
 #register-form input {
   background-color: transparent;
-}
-
-#separation {
-  border-bottom: 1px solid #fff;
-  text-align: center;
-  height: 10px;
-  width: 400px;
 }
 
 #register-page div p {
@@ -117,13 +112,12 @@ button[type='submit']:hover {
   width: 100%;
 }
 
-#already-have-account {
-  display: flex;
-  justify-content: center;
+#register-form #already-have-account {
+  align-items: center;
 }
 
-#already-have-account a {
-  color: blue;
+#register-form #already-have-account a {
+  color: var(--color-link);
 }
 
 .password-strength#low {

@@ -1,9 +1,9 @@
-import { Form, redirect, useNavigate } from "react-router";
-import { useState, type FormEvent } from "react";
-import { useAuth } from "~/provider/auth/authProvider";
-import { updateUser } from "~/utils/apis";
-import { getJwt, parseJwt } from "~/lib/auth";
-import "./profile.css";
+import { Form, redirect, useNavigate } from 'react-router';
+import { useState, type FormEvent } from 'react';
+import { useAuth } from '~/Providers/authProvider';
+import { updateUser } from '~/utils/apis';
+import { getJwt, parseJwt } from '~/lib/auth';
+import './Profile.css';
 
 export default function Profile() {
   const { user, setUser } = useAuth();
@@ -19,7 +19,7 @@ export default function Profile() {
     if (user) {
       try {
         const jwt = parseJwt(getJwt());
-        const fingerprintHash = jwt?.["X-User-Fingerprint"];
+        const fingerprintHash = jwt?.['X-User-Fingerprint'];
         parsedData = { fingerprintHash, ...parsedData };
         const response = await updateUser(parsedData);
         if (!response.data.success) {
@@ -32,7 +32,7 @@ export default function Profile() {
         console.log(err);
       }
     } else {
-      navigate("/login");
+      navigate('/login');
     }
   }
 

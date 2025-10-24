@@ -1,7 +1,7 @@
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
-import { Outlet } from "react-router";
-import { useAuth } from "~/provider/auth/authProvider";
-import Header from "./header";
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { Outlet } from 'react-router';
+import { useAuth } from '~/Providers/authProvider';
+import Header from './Header';
 
 export default function OuterLayout() {
   const { user } = useAuth();
@@ -10,19 +10,19 @@ export default function OuterLayout() {
   const [isOpenNav, setOpenNav] = useState(false);
   const isMobile = windowWidth < 768;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     // Initial call to set the width on mount
     handleResize();
 
     // Cleanup the event listener on component unmount
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 

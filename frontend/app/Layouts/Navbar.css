@@ -1,0 +1,37 @@
+/* TODO: correct navbar position when resize window */
+nav {
+  position: relative;
+  width: 250px;
+  height: 100%;
+  grid-area: alias-nav;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 2rem 1.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  background-color: var(--color-navbar);
+  margin-bottom: 1rem;
+}
+
+nav div {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  gap: 1rem;
+}
+
+.material-symbols-outlined {
+  margin-bottom: 0.5rem;
+}
+
+#home,
+#orders {
+  opacity: 0.9;
+}
+
+#home:hover,
+#orders:hover {
+  opacity: 1;
+}

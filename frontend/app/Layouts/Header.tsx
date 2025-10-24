@@ -1,6 +1,6 @@
-import { NavLink } from "react-router";
-import "./header.css";
-import { useAuth } from "~/provider/auth/authProvider";
+import { NavLink } from 'react-router';
+import './Header.css';
+import { useAuth } from '~/Providers/authProvider';
 
 interface Props {
   isMobile: boolean;
@@ -11,9 +11,9 @@ export default function Header({ isMobile, toggleMenu }: Props) {
   const { user, jwt, setJwt, setRefreshToken } = useAuth();
 
   function handleSignOut() {
-    setJwt("");
-    setRefreshToken("");
-    localStorage.setItem("logout", Date.now().toString()); // to support logging out from all windows
+    setJwt('');
+    setRefreshToken('');
+    localStorage.setItem('logout', Date.now().toString()); // to support logging out from all windows
     // TODO: Hit the signout endpoint to clear the fingerprint cookie
   }
 
@@ -21,11 +21,7 @@ export default function Header({ isMobile, toggleMenu }: Props) {
     <header>
       <div id="left-header">
         {isMobile && (
-          <span
-            className="material-symbols-outlined"
-            id="menu"
-            onClick={toggleMenu}
-          >
+          <span className="material-symbols-outlined" id="menu" onClick={toggleMenu}>
             menu
           </span>
         )}
