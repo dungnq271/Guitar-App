@@ -1,37 +1,76 @@
-/* TODO: correct navbar position when resize window */
-nav {
-  position: relative;
+#sidebar {
+  position: absolute;
   width: 250px;
+  height: 100%;
+}
+
+#sidebar nav {
+  position: relative;
   height: 100%;
   grid-area: alias-nav;
   display: flex;
   flex-direction: column;
+  z-index: 3;
   gap: 1em;
   padding: 2rem 1.25rem;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-foreground);
   background-color: var(--color-navbar);
   margin-bottom: 1rem;
+  border-top-right-radius: 1em;
 }
 
-nav div {
+#inner-layout .modal-bg nav {
+  animation: slide-in 500ms forwards;
+  /* slide-out 50ms forwards; */
+}
+
+@keyframes slide-in {
+  from {
+    translate: -10vw 0;
+  }
+
+  to {
+    translate: 0 0;
+  }
+}
+
+@keyframes slide-out {
+  from {
+    translate: 0 0;
+  }
+
+  to {
+    translate: -100vw 0;
+  }
+}
+
+#sidebar nav div {
   display: flex;
   flex-direction: row;
   justify-content: start;
   gap: 1rem;
 }
 
-.material-symbols-outlined {
-  margin-bottom: 0.5rem;
+#sidebar nav a {
+  border-radius: 8px;
+  display: flex;
+  padding: 0.5rem;
+  transition: background-color 100ms;
 }
 
-#home,
-#orders {
-  opacity: 0.9;
+#sidebar nav a:hover {
+  background: #36394e;
 }
 
-#home:hover,
-#orders:hover {
-  opacity: 1;
+#sidebar nav a.active {
+  background: #4d5875;
+}
+
+@media (min-width: 768px) {
+  #sidebar nav {
+    grid-area: alias-nav;
+    border-top-right-radius: 0;
+  }
 }

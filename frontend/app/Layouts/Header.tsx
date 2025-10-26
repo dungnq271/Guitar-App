@@ -13,37 +13,43 @@ export default function Header({ isMobile, toggleMenu }: Props) {
   function handleSignOut() {
     setJwt('');
     setRefreshToken('');
-    localStorage.setItem('logout', Date.now().toString()); // to support logging out from all windows
     // TODO: Hit the signout endpoint to clear the fingerprint cookie
   }
 
   return (
-    <header>
-      <div id="left-header">
-        {isMobile && (
-          <span className="material-symbols-outlined" id="menu" onClick={toggleMenu}>
-            menu
-          </span>
-        )}
-        <h2>LOGO</h2>
-      </div>
-      {jwt ? (
-        <div id="avatar">
-          <NavLink to="/profile">Profile user {user?.username}</NavLink>
-          <NavLink to="/" onClick={handleSignOut}>
-            Sign out
-          </NavLink>
-        </div>
-      ) : (
-        <div id="auth-nav">
-          <NavLink id="login" to="/login">
-            <p>Sign in</p>
-          </NavLink>
-          <NavLink id="register" to="/register">
-            <p>Sign up</p>
-          </NavLink>
-        </div>
+    <div id="header">
+      {isMobile && (
+        <span className="material-symbols-outlined" id="menu" onClick={toggleMenu}>
+          menu
+        </span>
       )}
-    </header>
+      <header>
+        <div id="left-header">
+          <h2 id="logo">LOGO</h2>
+        </div>
+        {
+          // <div id="search-bar"></div>
+        }
+        <div id="right-header">
+          {jwt ? (
+            <div id="avatar">
+              <NavLink to="/profile">Profile user {user?.username}</NavLink>
+              <NavLink to="/" onClick={handleSignOut}>
+                Sign out
+              </NavLink>
+            </div>
+          ) : (
+            <div id="auth-nav">
+              <NavLink id="login" to="/login">
+                <p>Sign in</p>
+              </NavLink>
+              <NavLink id="register" to="/register">
+                <p>Sign up</p>
+              </NavLink>
+            </div>
+          )}
+        </div>
+      </header>
+    </div>
   );
 }

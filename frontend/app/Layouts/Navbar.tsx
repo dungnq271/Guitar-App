@@ -1,16 +1,18 @@
 import { NavLink } from 'react-router';
 import './Navbar.css';
 
-export default function Navbar() {
+export default function Navbar({ isOpen }: { isOpen: boolean }) {
   return (
-    <nav id="navbar">
-      <NavLink id="home" to="/">
-        <HomeNav />
-      </NavLink>
-      <NavLink id="orders" to="/orders">
-        <OrdersNav />
-      </NavLink>
-    </nav>
+    <div id="sidebar" className={!isOpen ? 'hidden' : ''}>
+      <nav>
+        <NavLink id="home" to="/">
+          <HomeNav />
+        </NavLink>
+        <NavLink id="orders" to="/orders">
+          <OrdersNav />
+        </NavLink>
+      </nav>
+    </div>
   );
 }
 
