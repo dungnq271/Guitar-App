@@ -1,4 +1,5 @@
 #profile {
+  grid-area: alias-main;
   display: flex;
   flex-direction: column;
   padding: 2rem;

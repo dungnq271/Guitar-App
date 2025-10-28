@@ -1,8 +1,8 @@
 #description-panel {
+  grid-area: alias-main;
   position: relative;
   min-height: 100vh;
   display: flex;
-  background-color: var(--color-main);
   color: #fff;
   padding: 5;
   align-items: center;

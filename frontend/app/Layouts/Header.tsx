@@ -1,14 +1,17 @@
 import { NavLink } from 'react-router';
-import './Header.css';
+import { useState, useLayoutEffect } from 'react';
 import { useAuth } from '~/Providers/authProvider';
+import { nameToColour } from '~/lib/stringToColour';
+import './Header.css';
 
 interface Props {
   isMobile: boolean;
-  toggleMenu: () => void;
+  toggleNavMenu: () => void;
 }
 
-export default function Header({ isMobile, toggleMenu }: Props) {
+export default function Header({ isMobile, toggleNavMenu }: Props) {
   const { user, jwt, setJwt, setRefreshToken } = useAuth();
+  const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
 
   function handleSignOut() {
     setJwt('');
@@ -16,10 +19,33 @@ export default function Header({ isMobile, toggleMenu }: Props) {
     // TODO: Hit the signout endpoint to clear the fingerprint cookie
   }
 
+  useLayoutEffect(() => {
+    // if user click outside the nav area then close nav
+    const handleClickOutsideMenu = (event: MouseEvent) => {
+      const clickedElement = event.target as HTMLElement;
+
+      if (
+        isProfileMenuOpen &&
+        clickedElement.id !== 'profile-image' &&
+        clickedElement.id !== 'profile-menu' &&
+        clickedElement.offsetParent?.id !== 'profile-menu'
+      ) {
+        setProfileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('click', handleClickOutsideMenu);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('click', handleClickOutsideMenu);
+    };
+  }, [isProfileMenuOpen]);
+
   return (
     <div id="header">
       {isMobile && (
-        <span className="material-symbols-outlined" id="menu" onClick={toggleMenu}>
+        <span className="material-symbols-outlined" id="menu" onClick={toggleNavMenu}>
           menu
         </span>
       )}
@@ -32,12 +58,25 @@ export default function Header({ isMobile, toggleMenu }: Props) {
         }
         <div id="right-header">
           {jwt ? (
-            <div id="avatar">
-              <NavLink to="/profile">Profile user {user?.username}</NavLink>
-              <NavLink to="/" onClick={handleSignOut}>
-                Sign out
-              </NavLink>
-            </div>
+            <>
+              <button
+                id="profile-image"
+                style={{ backgroundColor: nameToColour(user.firstName + ' ' + user.lastName) }}
+                onClick={() => setProfileMenuOpen(!isProfileMenuOpen)}
+              >
+                {user.firstName !== '' &&
+                  user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()}
+              </button>
+              {isProfileMenuOpen && (
+                <div id="profile-menu">
+                  <NavLink to="/profile">My profile</NavLink>
+                  <hr></hr>
+                  <NavLink to="/" onClick={handleSignOut}>
+                    Sign out
+                  </NavLink>
+                </div>
+              )}
+            </>
           ) : (
             <div id="auth-nav">
               <NavLink id="login" to="/login">

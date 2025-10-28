@@ -25,6 +25,9 @@ export default function RegisterPage() {
   const passwordStrength =
     countPasswordCritMatch <= 1 ? 'low' : countPasswordCritMatch === 2 ? 'medium' : 'strong';
 
+  console.log(passwordStrength);
+  console.log(input.password.length);
+
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +58,20 @@ export default function RegisterPage() {
       const errorObj = { ...prev };
 
       switch (name) {
+        case 'firstName':
+          if (!value) {
+            errorObj[name] = 'Please enter first name.';
+          } else {
+            errorObj[name] = '';
+          }
+          break;
+        case 'lastName':
+          if (!value) {
+            errorObj[name] = 'Please enter last name.';
+          } else {
+            errorObj[name] = '';
+          }
+          break;
         case 'username':
           if (!value) {
             errorObj[name] = 'Please enter username.';
@@ -136,14 +153,30 @@ export default function RegisterPage() {
             <h1>Create an account</h1>
           </div>
           <Form id="register-form" method="post" onSubmit={handleSubmit}>
-            <div id="name">
+            <div className="name">
               <div id="first-name">
-                <p>First name</p>
-                <input name="firstName" value={input.firstName} onChange={handleInputChange} />
+                <p>
+                  First name <span className="required-asterisk">*</span>
+                </p>
+                <input
+                  name="firstName"
+                  value={input.firstName}
+                  onChange={handleInputChange}
+                  onBlur={validateInput}
+                />
+                {error.firstName && <span className="err">{error.firstName}</span>}
               </div>
               <div id="last-name">
-                <p>Last name</p>
-                <input name="lastName" value={input.lastName} onChange={handleInputChange} />
+                <p>
+                  Last name <span className="required-asterisk">*</span>
+                </p>
+                <input
+                  name="lastName"
+                  value={input.lastName}
+                  onChange={handleInputChange}
+                  onBlur={validateInput}
+                />
+                {error.lastName && <span className="err">{error.lastName}</span>}
               </div>
             </div>
             <div id="username">

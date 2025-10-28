@@ -31,7 +31,7 @@ export default function Guitars({ loaderData }: Route.ComponentProps) {
                   <div id="action">View Details</div>
                 </div>
                 <div id="details">
-                  <h2 id="name">{guitar.name}</h2>
+                  <h2 className="name">{guitar.name}</h2>
                   <p id="short-description">{guitar.shortDescription}</p>
                   <div id="price">${guitar.price}</div>
                 </div>

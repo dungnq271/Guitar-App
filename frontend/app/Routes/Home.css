@@ -1,6 +1,5 @@
 #index-page {
   grid-area: alias-main;
-  background-color: var(--color-main);
   overflow-y: scroll;
   display: grid;
   grid-template-rows: 1fr auto 60px;
@@ -124,7 +123,7 @@ main #title {
   transform: translateY(40%);
 }
 
-#name {
+#details .name {
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 0.8rem;

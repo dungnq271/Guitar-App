@@ -27,7 +27,6 @@
 }
 
 #register-page #modal #title {
-  width: 100%;
   display: flex;
   justify-content: center;
   margin: 2rem 0;
@@ -45,14 +44,14 @@
   flex-direction: column;
 }
 
-#register-form #name {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+#register-form .name input {
+  width: 30%;
 }
 
-#register-form #name input {
-  width: 200px;
+#register-form #first-name,
+#register-form #last-name {
+  display: flex;
+  flex-direction: column;
 }
 
 #register-form div p {
@@ -71,14 +70,9 @@
   height: 40px;
 }
 
-#register-form #password > div {
-  display: flex;
-  justify-content: space-between;
-}
-
 #register-form div > input,
 #register-form button[type='submit'] {
-  width: 420px;
+  width: 90%;
 }
 
 #register-form button[type='submit'] {
@@ -130,4 +124,12 @@
 
 .password-strength#strong {
   color: #20e859;
+}
+
+@media (min-width: 768px) {
+  #register-form .name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
