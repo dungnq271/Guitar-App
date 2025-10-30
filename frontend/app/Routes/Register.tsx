@@ -22,6 +22,7 @@ export default function RegisterPage() {
     confirmPassword: ''
   });
   const [countPasswordCritMatch, setCountPasswordCritMatch] = useState(0);
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
   const passwordStrength =
     countPasswordCritMatch <= 1 ? 'low' : countPasswordCritMatch === 2 ? 'medium' : 'strong';
 
@@ -147,11 +148,10 @@ export default function RegisterPage() {
 
   return (
     <div id="register-page">
-      <div id="modal">
-        <div id="left-modal">
-          <div id="title">
-            <h1>Create an account</h1>
-          </div>
+      <div id="left"></div>
+      <div id="right">
+        <div id="modal">
+          <h1>Create an account</h1>
           <Form id="register-form" method="post" onSubmit={handleSubmit}>
             <div className="name">
               <div id="first-name">
@@ -207,15 +207,29 @@ export default function RegisterPage() {
               <p>
                 Password <span className="required-asterisk">*</span>
               </p>
-              <input
-                name="password"
-                // TODO: implement toggling eye
-                type={true ? 'password' : 'text'}
-                value={input.password}
-                onChange={handleInputChange}
-                onBlur={validateInput}
-                required
-              />
+              <div id="password-input">
+                <input
+                  name="password"
+                  // TODO: implement toggling eye
+                  type={passwordVisibility ? 'text' : 'password'}
+                  value={input.password}
+                  onChange={handleInputChange}
+                  onBlur={validateInput}
+                  required
+                />
+                <button
+                  id="toggle-visibility"
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault();
+                    setPasswordVisibility(!passwordVisibility);
+                  }}
+                >
+                  <span className="material-symbols-outlined" id="visibility">
+                    {passwordVisibility ? 'visibility_off' : 'visibility'}
+                  </span>
+                </button>
+              </div>
+
               {error.password && <span className="err">{error.password}</span>}
               {input.password.length > 0 && (
                 <span className="password-strength" id={passwordStrength}>
@@ -223,7 +237,7 @@ export default function RegisterPage() {
                 </span>
               )}
             </div>
-            <div id="confirmPassword">
+            <div id="confirm-password">
               <p>
                 Confirm password <span className="required-asterisk">*</span>
               </p>
@@ -239,7 +253,7 @@ export default function RegisterPage() {
             <button id="register" type="submit">
               Create account
             </button>
-            <div id="separation">
+            <div className="separation">
               <span>or</span>
             </div>
             <div id="already-have-account">
@@ -251,9 +265,6 @@ export default function RegisterPage() {
               </span>
             </div>
           </Form>
-        </div>
-        <div id="right-modal">
-          <img src="./app/Images/guitars.jpg" />
         </div>
       </div>
     </div>
