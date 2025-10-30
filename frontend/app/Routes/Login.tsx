@@ -33,9 +33,7 @@ export default function SignInPage() {
   return (
     <div id="login-page">
       <div id="modal">
-        <div id="title">
-          <h1>Sign in</h1>
-        </div>
+        <h1>Sign in</h1>
         <Form id="login-form" method="post" onSubmit={handleSubmit}>
           {errorMsg && <p className="err">{errorMsg}</p>}
           <div id="email">
@@ -52,7 +50,7 @@ export default function SignInPage() {
           <button id="login" type="submit">
             Sign in
           </button>
-          <div id="separation">
+          <div className="separation">
             <span>or</span>
           </div>
           <button id="with-google" type="submit">
