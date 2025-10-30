@@ -52,6 +52,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: var(--color-foreground);
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #23232329;
+}
+
 html,
 body {
   height: 100vh;
@@ -127,14 +137,13 @@ pre {
   background-color: var(--color-modal-background);
 }
 
-#separation {
-  border-bottom: 1px solid #fff;
+.separation {
+  border-bottom: 1px solid #ffffff;
   text-align: center;
   height: 10px;
-  width: 400px;
 }
 
-#separation span {
+.separation span {
   background: var(--color-main);
   padding: 0 5px;
 }
