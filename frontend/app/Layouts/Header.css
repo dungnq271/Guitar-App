@@ -76,6 +76,9 @@ hr {
   position: absolute;
   left: 1rem;
   align-items: center;
+  height: 24px;
+  border: none;
+  background-color: transparent;
 }
 
 #menu:hover {

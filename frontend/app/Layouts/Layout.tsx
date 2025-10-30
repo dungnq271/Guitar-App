@@ -49,10 +49,12 @@ export default function Layout() {
     // if user click outside the nav area then close nav
     const handleClickOutsideNav = (event: MouseEvent) => {
       const clickedElement = event.target as HTMLElement;
+      console.log(clickedElement);
 
       if (
         isMobile &&
         clickedElement.id !== 'menu' &&
+        clickedElement.id !== 'menu-icon' &&
         clickedElement.tagName !== 'NAV' &&
         clickedElement.offsetParent?.tagName !== 'NAV' &&
         isNavOpen

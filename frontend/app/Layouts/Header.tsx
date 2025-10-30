@@ -45,9 +45,11 @@ export default function Header({ isMobile, toggleNavMenu }: Props) {
   return (
     <div id="header">
       {isMobile && (
-        <span className="material-symbols-outlined" id="menu" onClick={toggleNavMenu}>
-          menu
-        </span>
+        <button id="menu" onClick={toggleNavMenu}>
+          <span className="material-symbols-outlined" id="menu-icon">
+            menu
+          </span>
+        </button>
       )}
       <header>
         <div id="left-header">
