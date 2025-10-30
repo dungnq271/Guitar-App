@@ -37,24 +37,17 @@ export function usePersistor<T>(
   initialData: T,
   driver: LocalStorageManager<T>
 ): [T, (data: T) => void] {
-  const [storedData, _setStoredData] = useState<T>(() => initialData);
-  const _channel = useRef(new BroadcastChannel(key)).current;
-
-  const _readValue = () => {
+  const [storedData, _setStoredData] = useState<T>(() => {
     const value = driver.get(key);
     return value ?? initialData;
-  };
+  });
+  const _channel = useRef(new BroadcastChannel(key)).current;
 
   const setValue = (data: T) => {
     driver.set(key, data);
     _setStoredData(data);
     _channel.postMessage({ message: key, data });
   };
-
-  useLayoutEffect(() => {
-    const value = _readValue();
-    _setStoredData(value);
-  }, []);
 
   useLayoutEffect(() => {
     _channel.postMessage({ message: 'NEW_TAB' });
