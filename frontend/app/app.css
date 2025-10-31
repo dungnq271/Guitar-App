@@ -32,7 +32,7 @@ body {
 
   --color-modal-background: rgba(0, 0, 0, 0.7);
   --color-error-text: #e64646;
-  --color-required-asterisk: rgba(255, 0, 0, 0.7);
+  --color-red: rgba(255, 0, 0, 0.7);
   --color-submit-btn: #609d1e;
   --color-link: #2c8cff;
 }
@@ -124,7 +124,7 @@ pre {
 }
 
 .required-asterisk {
-  color: var(--color-required-asterisk);
+  color: var(--color-red);
 }
 
 .modal-bg {
@@ -138,7 +138,7 @@ pre {
 }
 
 .separation {
-  border-bottom: 1px solid #ffffff;
+  border-bottom: 1px solid var(--color-foreground);
   text-align: center;
   height: 10px;
 }
@@ -146,6 +146,22 @@ pre {
 .separation span {
   background: var(--color-main);
   padding: 0 5px;
+}
+
+.password-input {
+  position: relative;
+}
+
+.toggle-visibility {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  border: none;
+  background-color: transparent;
+  align-items: center;
+  height: 24px;
+  padding: 0;
+  margin: 0;
 }
 
 #loading-splash {

@@ -20,10 +20,6 @@
   padding: 2rem;
 }
 
-#login-page #modal h1 {
-  margin-bottom: 1rem;
-}
-
 #login-form {
   display: flex;
   flex-direction: column;
@@ -38,7 +34,7 @@
 
 #login-form div p {
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 0.5rem;
 }
 
 #login-form div > input {
@@ -57,10 +53,6 @@ button[type='submit'] {
   justify-content: space-between;
 }
 
-#login-page a {
-  color: var(--color-link);
-}
-
 #login-form #email input,
 #login-form #password input,
 #login-form button[type='submit'] {
@@ -76,6 +68,14 @@ button[type='submit'] {
 
 #login-form button[type='submit']:hover {
   opacity: 1;
+}
+
+#login-form > .err {
+  text-align: center;
+}
+
+#login-page a {
+  color: var(--color-link);
 }
 
 #login-form #with-google {
