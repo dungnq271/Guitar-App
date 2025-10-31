@@ -1,224 +1,212 @@
 import { useState } from 'react';
-import { Form, Link, useNavigate } from 'react-router';
-import { register } from '~/utils/apis';
+import { Form, Link, redirect, useNavigate } from 'react-router';
+import { useMutation } from '@tanstack/react-query';
+import { useForm, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+import { register as requestRegisterApi } from '~/utils/apis';
 import './Register.css';
-import type { AxiosError } from 'axios';
+
+const RegisterUserSchema = z
+  .object({
+    firstName: z.string().min(1, { message: 'Please enter first name' }),
+    lastName: z.string().min(1, { message: 'Please enter first name' }),
+    username: z.string().min(1, { message: 'Please enter username' }),
+    email: z.email({ message: 'Please enter a valid email address' }),
+    password: z
+      .string()
+      .min(1, { message: 'Please enter a password' })
+      .min(8, { message: 'Password must be at least 8 characters' }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: 'Please confirm your password' })
+      .min(8, { message: 'Password must be at least 8 characters' })
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword']
+  });
+
+type RegisterUserSchemaType = z.infer<typeof RegisterUserSchema>;
+
+// Password validation patterns
+const passwordValidationPatterns = {
+  atLeastOneUppercase: /[A-Z]/,
+  atLeastOneLowercase: /[a-z]/,
+  atLeastOneNumeric: /[0-9]/,
+  atLeastOneSpecialChar: /[!@#\$%\^\&*\)\(+=._-]/
+};
 
 export default function RegisterPage() {
-  const [input, setInput] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+  const {
+    control,
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors }
+  } = useForm<RegisterUserSchemaType>({
+    resolver: zodResolver(RegisterUserSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
   });
-  const [error, setError] = useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-  const [countPasswordCritMatch, setCountPasswordCritMatch] = useState(0);
   const [passwordVisibility, setPasswordVisibility] = useState(false);
+  const navigate = useNavigate();
+
+  const mutation = useMutation({
+    mutationFn: (data: FormData) => {
+      return requestRegisterApi(data);
+    },
+    onSuccess: (response) => {
+      console.log(response);
+      // TODO: optimize pending UI after settled
+      navigate('/login');
+    },
+    onError: (error: any) => {
+      if (error?.response?.data?.errors) {
+        Object.entries(error.response.data.errors).forEach((err: any) => {
+          setError(err[0], { type: 'manual', message: err[1][0] });
+        });
+      }
+    }
+  });
+
+  const onSubmit = async (data) => {
+    await mutation.mutateAsync(data);
+  };
+
+  /**
+   * The current value of the 'firstName' field in the form.
+   * @type {string}
+   */
+  const firstName: string = useWatch({
+    control,
+    name: 'firstName'
+  });
+
+  /**
+   * The current value of the 'lastName' field in the form.
+   * @type {string}
+   */
+  const lastName: string = useWatch({
+    control,
+    name: 'lastName'
+  });
+
+  /**
+   * The current value of the 'username' field in the form.
+   * @type {string}
+   */
+  const username: string = useWatch({
+    control,
+    name: 'username'
+  });
+
+  /**
+   * The current value of the 'email' field in the form.
+   * @type {string}
+   */
+  const email: string = useWatch({
+    control,
+    name: 'email'
+  });
+
+  /**
+   * The current value of the 'password' field in the form.
+   * @type {string}
+   */
+  const password: string = useWatch({
+    control,
+    name: 'password'
+  });
+
+  /**
+   * The current value of the 'confirmPassword' field in the form.
+   * @type {string}
+   */
+  const confirmPassword: string = useWatch({
+    control,
+    name: 'confirmPassword'
+  });
+
+  const countPasswordCritMatch = Object.entries(passwordValidationPatterns).filter(([_, value]) =>
+    value.test(password)
+  ).length;
+
   const passwordStrength =
     countPasswordCritMatch <= 1 ? 'low' : countPasswordCritMatch === 2 ? 'medium' : 'strong';
 
-  console.log(passwordStrength);
-  console.log(input.password.length);
-
-  const navigate = useNavigate();
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInput({ ...input, [name]: value });
-    validateInput(e);
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const form = new FormData(e.target as HTMLFormElement);
-    const parsedData = Object.fromEntries(form.entries());
-
-    try {
-      const response = await register(parsedData);
-      console.log(response.data);
-      navigate('/login');
-    } catch (err: AxiosError) {
-      console.log(err.response.data);
-    }
-  };
-
-  const validateInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    setError((prev) => {
-      const errorObj = { ...prev };
-
-      switch (name) {
-        case 'firstName':
-          if (!value) {
-            errorObj[name] = 'Please enter first name.';
-          } else {
-            errorObj[name] = '';
-          }
-          break;
-        case 'lastName':
-          if (!value) {
-            errorObj[name] = 'Please enter last name.';
-          } else {
-            errorObj[name] = '';
-          }
-          break;
-        case 'username':
-          if (!value) {
-            errorObj[name] = 'Please enter username.';
-          } else {
-            errorObj[name] = '';
-          }
-          break;
-        case 'email':
-          if (!value) {
-            errorObj[name] = 'Please enter email.';
-          } else {
-            errorObj[name] = '';
-          }
-          break;
-        case 'password':
-          validatePassword(errorObj, value);
-          break;
-        case 'confirmPassword':
-          if (!value) {
-            errorObj[name] = 'Please enter Confirm Password.';
-          } else if (input.password && input.confirmPassword !== input.password) {
-            errorObj['confirmPassword'] = 'Password and Confirm Password does not match.';
-          } else {
-            errorObj[name] = '';
-          }
-          break;
-
-        default:
-          break;
-      }
-      return errorObj;
-    });
-  };
-
-  const validatePassword = (
-    errorObj: { password: string; confirmPassword: string },
-    value: string
-  ) => {
-    if (!value) {
-      errorObj.password = 'Please enter Password.';
-    } else {
-      errorObj.password = '';
-      let countCritMatch = 0;
-
-      // Password at least 8 characters long
-      if (value.length >= 8) {
-        countCritMatch += 1;
-      }
-
-      // Password contains at least one uppercase letter
-      if (/[A-Z]/.test(value)) {
-        countCritMatch += 1;
-      }
-
-      // Password contains at least one number
-      if (/[0-9]/.test(value)) {
-        countCritMatch += 1;
-      }
-
-      // Password contains at least one special character
-      if (/[!@#\$%\^\&*\)\(+=._-]/.test(value)) {
-        countCritMatch += 1;
-      }
-
-      // ignore confirm password error if user currently typing pasword
-      if (error.confirmPassword) {
-        errorObj.confirmPassword = '';
-      }
-
-      setCountPasswordCritMatch(countCritMatch);
-    }
-  };
+  const isDisabled =
+    !firstName ||
+    !lastName ||
+    !username ||
+    !email ||
+    !password ||
+    password !== confirmPassword ||
+    mutation.isPending;
 
   return (
     <div id="register-page">
+      {mutation.isPending && (
+        <div className="modal-bg">
+          <div id="loading-splash">
+            <div id="loading-splash-spinner" />
+            <p>Loading, please wait...</p>
+          </div>
+        </div>
+      )}
       <div id="left"></div>
       <div id="right">
         <div id="modal">
           <h1>Create an account</h1>
-          <Form id="register-form" method="post" onSubmit={handleSubmit}>
+          <Form id="register-form" method="post" onSubmit={handleSubmit(onSubmit)}>
             <div className="name">
               <div id="first-name">
                 <p>
                   First name <span className="required-asterisk">*</span>
                 </p>
-                <input
-                  name="firstName"
-                  value={input.firstName}
-                  onChange={handleInputChange}
-                  onBlur={validateInput}
-                />
-                {error.firstName && <span className="err">{error.firstName}</span>}
+                <input {...register('firstName', { required: true })} />
+                {errors.firstName && <span className="err">{errors.firstName.message}</span>}
               </div>
               <div id="last-name">
                 <p>
                   Last name <span className="required-asterisk">*</span>
                 </p>
-                <input
-                  name="lastName"
-                  value={input.lastName}
-                  onChange={handleInputChange}
-                  onBlur={validateInput}
-                />
-                {error.lastName && <span className="err">{error.lastName}</span>}
+                <input {...register('lastName', { required: true })} />
+                {errors.lastName && <span className="err">{errors.lastName.message}</span>}
               </div>
             </div>
             <div id="username">
               <p>
                 Username <span className="required-asterisk">*</span>
               </p>
-              <input
-                name="username"
-                value={input.username}
-                onChange={handleInputChange}
-                onBlur={validateInput}
-              />
-              {error.username && <span className="err">{error.username}</span>}
+              <input {...register('username', { required: true })} />
+              {errors.username && <span className="err">{errors.username.message}</span>}
             </div>
             <div id="email">
               <p>
                 Email address <span className="required-asterisk">*</span>
               </p>
-              <input
-                name="email"
-                value={input.email}
-                onChange={handleInputChange}
-                onBlur={validateInput}
-              />
-              {error.email && <span className="err">{error.email}</span>}
+              <input {...register('email', { required: true })} />
+              {errors.email && <span className="err">{errors.email.message}</span>}
             </div>
             <div id="password">
               <p>
                 Password <span className="required-asterisk">*</span>
               </p>
-              <div id="password-input">
+              <div className="password-input">
                 <input
-                  name="password"
-                  // TODO: implement toggling eye
                   type={passwordVisibility ? 'text' : 'password'}
-                  value={input.password}
-                  onChange={handleInputChange}
-                  onBlur={validateInput}
-                  required
+                  {...register('password', { required: true })}
                 />
                 <button
-                  id="toggle-visibility"
+                  className="toggle-visibility"
                   onClick={(e: React.MouseEvent) => {
                     e.preventDefault();
                     setPasswordVisibility(!passwordVisibility);
@@ -229,28 +217,38 @@ export default function RegisterPage() {
                   </span>
                 </button>
               </div>
-
-              {error.password && <span className="err">{error.password}</span>}
-              {input.password.length > 0 && (
-                <span className="password-strength" id={passwordStrength}>
-                  Strength: {passwordStrength}
-                </span>
+              {errors.password ? (
+                <span className="err">{errors.password.message}</span>
+              ) : (
+                password.length > 0 &&
+                (password.length < 8 ? (
+                  <span className="err">Password must be eight characters or more</span>
+                ) : (
+                  <span className="password-strength" id={passwordStrength}>
+                    Strength: {passwordStrength}
+                  </span>
+                ))
               )}
             </div>
             <div id="confirm-password">
               <p>
                 Confirm password <span className="required-asterisk">*</span>
               </p>
-              <input
-                name="confirmPassword"
-                type="password"
-                onChange={handleInputChange}
-                onBlur={validateInput}
-                required
-              />
-              {error.confirmPassword && <span className="err">{error.confirmPassword}</span>}
+              <input type="password" {...register('confirmPassword', { required: true })} />
+              {errors.confirmPassword ? (
+                <span className="err">{errors.confirmPassword.message}</span>
+              ) : (
+                confirmPassword.length > 0 &&
+                confirmPassword !== password && (
+                  <span className="err">Password and Confirm Password does not match</span>
+                )
+              )}
             </div>
-            <button id="register" type="submit">
+            <button
+              id="register"
+              type="submit"
+              disabled={isDisabled} // Prevents double-submit
+            >
               Create account
             </button>
             <div className="separation">

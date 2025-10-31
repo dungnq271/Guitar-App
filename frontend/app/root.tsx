@@ -6,9 +6,12 @@ import {
   Scripts,
   ScrollRestoration
 } from 'react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Route } from './+types/root';
 import AuthProvider from './Providers/authProvider';
 import './app.css';
+
+const queryClient = new QueryClient();
 
 export function HydrateFallback() {
   return (
@@ -57,9 +60,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   /* return <Outlet />; */
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

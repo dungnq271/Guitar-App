@@ -9,8 +9,10 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
+    "@tanstack/react-query": "^5.90.5",
     "axios": "^1.12.2",
     "broadcast-channel": "^7.1.0",
     "eslint": "^9.38.0",
@@ -18,7 +20,9 @@
     "jwt-decode": "^4.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "react-router": "^7.9.4"
+    "react-hook-form": "^7.65.0",
+    "react-router": "^7.9.4",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@react-router/dev": "^7.5.3",
