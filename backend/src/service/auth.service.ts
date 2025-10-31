@@ -85,7 +85,7 @@ export class AuthService {
         const user = await this.userRepository.findOne({ where: { email } });
         if (!user) {
           await limiterSlowBruteByIP.consume(ipAddr);
-          res.status(400).json({ success: false, message: 'User not found' });
+          res.status(400).json({ success: false, message: 'Email or password is not correct' });
         } else {
           const isValid = await checkPassword(password, user.password);
           if (isValid) {
@@ -112,7 +112,7 @@ export class AuthService {
               limiterSlowBruteByIP.consume(ipAddr),
               limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey)
             ]);
-            res.status(400).json({ success: false, message: 'Wrong password' });
+            res.status(400).json({ success: false, message: 'Email or password is not correct' });
           }
         }
       } catch (err) {

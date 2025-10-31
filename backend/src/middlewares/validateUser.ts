@@ -19,13 +19,23 @@ export const validatePassword = body('password')
   .notEmpty()
   .withMessage('Password must not be empty')
   .isLength({ min: 8 })
-  .withMessage('Password must be at least 8 characters long')
-  .matches(/[A-Z]/)
-  .withMessage('Password must contain at least one uppercase letter')
-  .matches(/[0-9]/)
-  .withMessage('Password must contain at least one number')
-  .matches(/[!@#\$%\^\&*\)\(+=._-]/)
-  .withMessage('Password must contain at least one special character');
+  .withMessage('Password must be at least 8 characters long');
+
+export const checkUsernameInUse = body('username').custom((value) =>
+  userRepository.findOne({ where: { username: value } }).then((user) => {
+    if (user) {
+      throw new Error('Username already in use');
+    }
+  })
+);
+
+export const checkEmailInUse = body('email').custom((value) =>
+  userRepository.findOne({ where: { email: value } }).then((user) => {
+    if (user) {
+      throw new Error('Email already in use');
+    }
+  })
+);
 
 export const validate = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
