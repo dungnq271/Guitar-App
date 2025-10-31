@@ -39,22 +39,21 @@
   gap: 1rem;
 }
 
-#register-form .name {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
 #register-form > div,
 #register-form .name > div,
 #register-form button[type='submit'] {
   width: 100%;
 }
 
-#register-form > div {
+#register-form > div:not(.separation) {
   display: flex;
   flex-direction: column;
+}
+
+#register-form > div.name {
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 #register-form #first-name,
@@ -142,7 +141,7 @@
 }
 
 @media (min-width: 768px) {
-  #register-form .name {
+  #register-form > div.name {
     flex-direction: column;
   }
 
@@ -170,7 +169,7 @@
 }
 
 @media (min-width: 1200px) {
-  #register-form .name {
+  #register-form > div.name {
     flex-direction: row;
   }
 

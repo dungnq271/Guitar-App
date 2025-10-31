@@ -31,6 +31,11 @@
   gap: 1rem;
 }
 
+#login-form > div:not(.separation) {
+  display: flex;
+  flex-direction: column;
+}
+
 #login-form div p {
   font-weight: 600;
   margin-bottom: 8px;
