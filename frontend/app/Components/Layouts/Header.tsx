@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router';
-import { useState, useLayoutEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '~/Providers/authProvider';
 import { nameToColour } from '~/lib/stringToColour';
 import './Header.css';
@@ -19,7 +19,7 @@ export default function Header({ isMobile, toggleNavMenu }: Props) {
     // TODO: Hit the signout endpoint to clear the fingerprint cookie
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     // if user click outside the nav area then close nav
     const handleClickOutsideMenu = (event: MouseEvent) => {
       const clickedElement = event.target as HTMLElement;
@@ -81,10 +81,10 @@ export default function Header({ isMobile, toggleNavMenu }: Props) {
             </>
           ) : (
             <div id="auth-nav">
-              <NavLink id="login" to="/login">
+              <NavLink id="login-navlink" to="/login">
                 <p>Sign in</p>
               </NavLink>
-              <NavLink id="register" to="/register">
+              <NavLink id="register-navlink" to="/register">
                 <p>Sign up</p>
               </NavLink>
             </div>

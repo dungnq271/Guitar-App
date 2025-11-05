@@ -1,6 +1,6 @@
-import type { Route } from './+types/orders';
-import { useAuth } from '~/Providers/authProvider';
-import './Orders.css';
+import type { Route } from './+types/index';
+import { useAuth } from '../../Providers/authProvider';
+import './index.css';
 
 export async function clientLoader({ params }: Route.LoaderArgs) {}
 

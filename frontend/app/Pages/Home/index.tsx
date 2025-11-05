@@ -1,7 +1,7 @@
-import { Link, redirect } from 'react-router';
-import type { Route } from './+types/Home';
-import { fetchGuitars } from '../utils/apis';
-import './Home.css';
+import { Link, redirect, useLoaderData } from 'react-router';
+import { fetchGuitars } from '../../utils/apis';
+import './index.css';
+import type { Guitar } from '~/utils/models';
 
 export async function clientLoader() {
   try {
@@ -12,8 +12,9 @@ export async function clientLoader() {
   }
 }
 
-export default function Guitars({ loaderData }: Route.ComponentProps) {
-  const guitars = loaderData;
+export default function Home() {
+  const guitars = useLoaderData<typeof clientLoader>() as Guitar[];
+  // const guitars = loaderData;
 
   return (
     <div id="index-page">

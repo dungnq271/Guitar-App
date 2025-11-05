@@ -32,7 +32,7 @@
   flex-direction: column;
 }
 
-#login-form div p {
+#login-form div label {
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -43,7 +43,7 @@
 }
 
 #login-form div > input,
-button[type='submit'] {
+#login-form .submit-btn {
   border-radius: 6px;
   height: 40px;
 }
@@ -55,19 +55,8 @@ button[type='submit'] {
 
 #login-form #email input,
 #login-form #password input,
-#login-form button[type='submit'] {
+#login-form .submit-btn {
   width: 400px;
-}
-
-#login-form button[type='submit'] {
-  background-color: var(--color-submit-btn);
-  font-size: 1rem;
-  opacity: 0.9;
-  border: none;
-}
-
-#login-form button[type='submit']:hover {
-  opacity: 1;
 }
 
 #login-form > .err {

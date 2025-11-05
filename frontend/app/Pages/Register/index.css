@@ -41,7 +41,7 @@
 
 #register-form > div,
 #register-form .name > div,
-#register-form button[type='submit'] {
+#register-form .submit-btn {
   width: 100%;
 }
 
@@ -62,13 +62,13 @@
   flex-direction: column;
 }
 
-#register-form div p {
+#register-form div label {
   font-weight: 600;
   margin-bottom: 8px;
 }
 
 #register-form div > input,
-#register-form button[type='submit'] {
+#register-form .submit-btn {
   border-radius: 6px;
   height: 40px;
 }
@@ -76,18 +76,6 @@
 #register-form div > input {
   font-size: 1rem;
   width: 100%;
-}
-
-#register-form button[type='submit'] {
-  background-color: var(--color-submit-btn);
-  font-size: 1rem;
-  font-weight: 500;
-  opacity: 0.9;
-  border: none;
-}
-
-#register-form button[type='submit']:hover {
-  opacity: 1;
 }
 
 #register-form input {

@@ -1,9 +1,9 @@
 import { Link } from 'react-router';
-import type { Route } from './+types/Guitar';
-import { fetchGuitars } from '../utils/apis';
+import type { Route } from './+types/index';
+import { fetchGuitars } from '../../utils/apis';
 import { type Guitar } from '~/utils/models';
 import { useState } from 'react';
-import './Guitar.css';
+import './index.css';
 
 interface ModalProps {
   isShown: boolean;

@@ -1,9 +1,9 @@
-import { Form, redirect, useNavigate } from 'react-router';
+import { Form, useNavigate } from 'react-router';
 import { useState, type FormEvent } from 'react';
-import { useAuth } from '~/Providers/authProvider';
-import { updateUser } from '~/utils/apis';
-import { getJwt, parseJwt } from '~/lib/auth';
-import './Profile.css';
+import { useAuth } from '../../Providers/authProvider';
+import { updateUser } from '../../utils/apis';
+import { getJwt, parseJwt } from '../../lib/auth';
+import './index.css';
 
 export default function Profile() {
   const { user, setUser } = useAuth();

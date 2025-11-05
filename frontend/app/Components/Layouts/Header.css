@@ -62,13 +62,13 @@ hr {
   border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-#register p {
+#register-navlink p {
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
   border: 1px solid var(--color-gray-500);
 }
 
-#register:hover {
+#register-navlink:hover {
   opacity: 0.8;
 }
 
