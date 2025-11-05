@@ -1,0 +1,10 @@
+.separation {
+  border-bottom: 1px solid var(--color-foreground);
+  text-align: center;
+  height: 10px;
+}
+
+.separation span {
+  background: var(--color-main);
+  padding: 0 5px;
+}
