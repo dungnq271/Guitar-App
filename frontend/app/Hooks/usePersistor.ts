@@ -1,5 +1,5 @@
-import { useState, useEffect, useLayoutEffect, useRef } from 'react';
-import { type User } from '~/utils/models';
+import { useState, useEffect, useRef } from 'react';
+import { type User } from '../utils/models';
 
 export class LocalStorageManager<T> {
   _storage;
@@ -49,11 +49,11 @@ export function usePersistor<T>(
     _channel.postMessage({ message: key, data });
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     _channel.postMessage({ message: 'NEW_TAB' });
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     function _listener(e: MessageEvent) {
       switch (e.data.message) {
         case 'NEW_TAB':
