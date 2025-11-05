@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { createContext, useContext, useEffect, useLayoutEffect } from 'react';
-import { Role, type User } from '~/utils/models';
-import { usePersistor, useDriver, LocalStorageManager } from '~/Hooks/usePersistor';
-import { parseJwt } from '~/lib/auth';
-import { getUser } from '~/utils/apis';
+import { createContext, useContext, useEffect } from 'react';
+import { Role, type User } from '../utils/models';
+import { usePersistor, useDriver, LocalStorageManager } from '../Hooks/usePersistor';
+import { parseJwt } from '../lib/auth';
+import { getUser } from '../utils/apis';
 
 interface AuthContextType {
   user: User;
@@ -51,7 +51,6 @@ const AuthProvider = ({ children }: Props) => {
     driver as LocalStorageManager<string>
   );
 
-  // useEffect(() => {
   if (jwt && user.id === -1) {
     const parsedJwt = parseJwt(jwt as string);
     const fingerprintHash = parsedJwt?.['X-User-Fingerprint'];
@@ -65,17 +64,12 @@ const AuthProvider = ({ children }: Props) => {
         console.log(err);
       });
   }
-  // }, [jwt]);
 
   useEffect(() => {
     if (jwt) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + jwt;
-      /* driver.set("jwt", jwt);
-       * driver.set("refreshToken", refreshToken); */
     } else {
       delete axios.defaults.headers.common['Authorization'];
-      /* driver.set("jwt", "");
-       * driver.set("refreshToken", ""); */
     }
   }, [jwt, refreshToken]);
 
