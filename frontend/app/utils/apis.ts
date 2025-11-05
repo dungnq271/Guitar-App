@@ -1,72 +1,73 @@
-import axios from "axios";
-import { type Guitar } from "./models";
-// import { axiosInstance as axios } from "../lib/axiosInterceptor";
-
-// axios.defaults.withCredentials = true;
-const baseURL = import.meta.env.VITE_BACKEND_URL;
+import axios from 'axios';
+import {
+  guitarListURL,
+  loginURL,
+  getUserURL,
+  updateUserURL,
+  registerURL,
+  refreshTokenURL
+} from '../Constants/apis';
+import { type Guitar } from './models';
 
 export async function fetchGuitars() {
-  const response = await axios.get(baseURL + `/guitar/list`, {
+  const response = await axios.get(guitarListURL, {
     headers: {
-      "Content-Type": "application/json",
-    },
+      'Content-Type': 'application/json'
+    }
   });
   return response.data.data as Guitar[];
 }
 
 export async function login(data: object) {
-  const response = await axios.post(baseURL + "/auth/login", data, {
+  const response = await axios.post(loginURL, data, {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
-    withCredentials: true,
+    withCredentials: true
   });
   return response;
 }
 
 export async function getUser(data: object) {
-  const response = await axios.post(baseURL + `/user`, data, {
+  const response = await axios.post(getUserURL, data, {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
-    withCredentials: true,
+    withCredentials: true
   });
   return response;
 }
 
 export async function updateUser(data: object) {
-  const response = await axios.post(baseURL + `/user/update`, data, {
+  const response = await axios.post(updateUserURL, data, {
     headers: {
-      "Content-Type": "application/json",
-    },
+      'Content-Type': 'application/json'
+    }
   });
   return response;
 }
 
 export async function register(data: object) {
-  const response = await axios.post(baseURL + "/auth/register", data, {
+  const response = await axios.post(registerURL, data, {
     headers: {
-      "Content-Type": "application/json",
-    },
+      'Content-Type': 'application/json'
+    }
   });
   return response;
 }
 
-export async function refreshJwt(
-  refreshToken: string,
-  fingerprintHash: string,
-) {
+export async function refreshJwt(refreshToken: string, fingerprintHash: string) {
   const response = await axios.post(
-    baseURL + "/auth/refresh-token",
+    refreshTokenURL,
     {
       fingerprintHash,
-      refreshToken,
+      refreshToken
     },
     {
       headers: {
-        "Content-Type": "application/json",
-      },
-    },
+        'Content-Type': 'application/json'
+      }
+    }
   );
   return response;
 }
