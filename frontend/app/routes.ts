@@ -2,8 +2,8 @@ import { type RouteConfig, layout, route, index } from '@react-router/dev/routes
 
 // index: initial route
 export default [
-  route('/', 'Components/ProtectedRoute.tsx', [
-    layout('Components/Layouts/Layout.tsx', [
+  route('/', 'Components/ProtectedRoute/index.tsx', [
+    layout('Components/Layouts/index.tsx', [
       index('Pages/Home/index.tsx'),
       route('profile', 'Pages/Profile/index.tsx'),
       route('orders', 'Pages/Orders/index.tsx'),

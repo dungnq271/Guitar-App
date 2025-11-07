@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './PasswordInput.css';
+import './index.css';
 
 const PasswordInput = ({ ...rest }) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);

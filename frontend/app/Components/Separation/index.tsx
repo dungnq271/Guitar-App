@@ -1,4 +1,4 @@
-import './Separation.css';
+import './index.css';
 
 const Separation = () => {
   return (

@@ -1,9 +1,9 @@
 import { expect, describe, it } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import PasswordInput from './PasswordInput';
+import PasswordInput from './index';
 
-describe('<Login />', () => {
+describe('<PasswordInput />', () => {
   const user = userEvent.setup();
 
   it('should render password invisibile and visibile when user clicks the toggling eye and invisible again when user clicks again', async () => {
