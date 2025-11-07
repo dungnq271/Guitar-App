@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import type { Route } from './+types/index';
-import { fetchGuitars } from '../../utils/apis';
-import { type Guitar } from '~/utils/models';
+import { fetchGuitars } from '@/utils/apis';
+import { type Guitar } from '@/utils/models';
 import { useState } from 'react';
 import './index.css';
 

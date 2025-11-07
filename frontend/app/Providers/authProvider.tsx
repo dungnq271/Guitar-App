@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { createContext, useContext, useEffect } from 'react';
-import { Role, type User } from '../utils/models';
-import { usePersistor, useDriver, LocalStorageManager } from '../Hooks/usePersistor';
-import { parseJwt } from '../lib/auth';
-import { getUser } from '../utils/apis';
+import { Role, type User } from '@/utils/models';
+import { usePersistor, useDriver, LocalStorageManager } from '@/Hooks/usePersistor';
+import { parseJwt } from '@/lib/auth';
+import { getUser } from '@/utils/apis';
 
 interface AuthContextType {
   user: User;

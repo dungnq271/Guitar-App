@@ -5,10 +5,10 @@ import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import { register as requestRegisterApi } from '../../utils/apis';
+import { register as requestRegisterApi } from '@/utils/apis';
+import PasswordInput from '@/Components/PasswordInput';
+import Separation from '@/Components/Separation';
 import './index.css';
-import PasswordInput from '../../Components/PasswordInput/PasswordInput';
-import Separation from '../../Components/Separation/Separation';
 
 const RegisterUserSchema = z
   .object({

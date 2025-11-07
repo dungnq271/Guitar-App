@@ -11,12 +11,12 @@
     "types": ["node", "vite/client", "vitest/globals", "@vitest/browser/matchers"],
     "target": "ES2022",
     "module": "ES2022",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "jsx": "react-jsx",
     "rootDirs": [".", "./.react-router/types"],
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "@/*": ["app/*"]
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,

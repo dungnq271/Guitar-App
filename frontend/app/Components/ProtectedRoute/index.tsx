@@ -1,6 +1,6 @@
 import { Outlet, useNavigate, Navigate } from 'react-router';
 import { useEffect } from 'react';
-import { useAuth } from '~/Providers/authProvider';
+import { useAuth } from '@/Providers/authProvider';
 
 export default function ProtectedRoute() {
   const { jwt } = useAuth();

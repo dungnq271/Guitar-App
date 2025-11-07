@@ -1,15 +1,15 @@
 import type { Route } from './+types/index';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Form, Link, useNavigate, useSubmit, useActionData, useNavigation } from 'react-router';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-import PasswordInput from '../../Components/PasswordInput/PasswordInput';
-import { login } from '../../utils/apis';
-import { useAuth } from '../../Providers/authProvider';
+import { login } from '@/utils/apis';
+import { useAuth } from '@/Providers/authProvider';
+import PasswordInput from '@/Components/PasswordInput';
+import Separation from '@/Components/Separation';
 import './index.css';
-import Separation from '../../Components/Separation/Separation';
 
 const LoginUserSchema = z.object({
   email: z.email({ message: 'Please enter a valid email address' }),
