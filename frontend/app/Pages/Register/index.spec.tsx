@@ -22,17 +22,34 @@ describe('<Register />', () => {
     // find all the important elements
     expect(screen.getByText('Create an account')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Create account' })).toBeInTheDocument();
-    expect(screen.getByLabelText('First name *')).toBeInTheDocument();
-    expect(screen.getByLabelText('Last name *')).toBeInTheDocument();
-    expect(screen.getByLabelText('Username *')).toBeInTheDocument();
-    expect(screen.getByLabelText('Email *')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password *')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password *')).toHaveAttribute('type', 'password');
-    expect(screen.getByLabelText('Confirm password *')).toBeInTheDocument();
-    expect(screen.getByLabelText('Confirm password *')).toHaveAttribute('type', 'password');
+
+    // find the elements
+    const firstNameInput = screen.getByLabelText('First name *') as HTMLInputElement;
+    const lastNameInput = screen.getByLabelText('Last name *') as HTMLInputElement;
+    const usernameInput = screen.getByLabelText('Username *') as HTMLInputElement;
+    const emailInput = screen.getByLabelText('Email *') as HTMLInputElement;
+    const passwordInput = screen.getByLabelText('Password *') as HTMLInputElement;
+    const confirmPasswordInput = screen.getByLabelText('Confirm password *') as HTMLInputElement;
+
+    expect(firstNameInput).toBeInTheDocument();
+    expect(lastNameInput).toBeInTheDocument();
+    expect(usernameInput).toBeInTheDocument();
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
+    expect(passwordInput).toHaveAttribute('type', 'password');
+    expect(confirmPasswordInput).toBeInTheDocument();
+    expect(confirmPasswordInput).toHaveAttribute('type', 'password');
     expect(screen.getByText('→ Login')).toBeInTheDocument();
 
     expect(screen.queryByText('Strength: low')).not.toBeInTheDocument();
+
+    // check initial values
+    expect(firstNameInput.value).toBe('');
+    expect(lastNameInput.value).toBe('');
+    expect(usernameInput.value).toBe('');
+    expect(emailInput.value).toBe('');
+    expect(passwordInput.value).toBe('');
+    expect(confirmPasswordInput.value).toBe('');
   });
 
   it('should navigate to the login route after clicking the Login link at the end of the form', async () => {
@@ -72,10 +89,12 @@ describe('<Register />', () => {
     const firstnameInput = screen.getByLabelText('First name *') as HTMLInputElement;
     await user.click(screen.getByRole('button', { name: 'Create account' }));
     expect(firstnameInput.validity.valueMissing).toBe(true);
+    // expect(firstnameInput).toBe(document.activeElement);
 
     const lastNameInput = screen.getByLabelText('Last name *') as HTMLInputElement;
     await user.type(firstnameInput, 'abcd');
     await user.click(screen.getByRole('button', { name: 'Create account' }));
+    // expect(lastNameInput).toBe(document.activeElement);
     expect(lastNameInput.validity.valueMissing).toBe(true);
   });
 

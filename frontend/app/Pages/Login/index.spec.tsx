@@ -22,10 +22,18 @@ describe('<Login />', () => {
     // find all the important elements
     expect(screen.getAllByText('Sign in')).toHaveLength(2);
     expect(screen.getByRole('button', { name: 'Sign in' })).toBeInTheDocument();
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password')).toBeInTheDocument();
+
+    const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
+    const passwordInput = screen.getByLabelText('Password') as HTMLInputElement;
+
+    expect(emailInput).toBeInTheDocument();
+    expect(passwordInput).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Continue with Google' })).toBeInTheDocument();
     expect(screen.getByText('Create an account')).toBeInTheDocument();
+
+    // check initial values
+    expect(emailInput.value).toBe('');
+    expect(passwordInput.value).toBe('');
   });
 
   it('should navigate to the register route after clicking the link at the end of the form', async () => {
