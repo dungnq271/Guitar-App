@@ -1,0 +1,25 @@
+#profile-image {
+  height: 45px;
+  width: 45px;
+  border-radius: 25%;
+  border: none;
+}
+
+#profile-image:hover {
+  cursor: pointer;
+}
+
+#dropdown-menu {
+  background-color: #151a26;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  top: 55px;
+  right: 0;
+  z-index: 10;
+  padding: 0.5rem;
+  white-space: nowrap;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
