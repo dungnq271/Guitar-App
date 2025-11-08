@@ -8,8 +8,7 @@ export class GuitarService {
 
   async listGuitars(req: Request) {
     return {
-      success: true,
-      data: guitars.map((guitar) => ({
+      products: guitars.map((guitar) => ({
         ...guitar,
         // image: `${req.protocol}://${req.get('host')}${guitar.image}`
         image: `app/Images${guitar.image}`
@@ -19,23 +18,23 @@ export class GuitarService {
 
   async getGuitar(req: Request) {
     // @ts-ignore
-    const guitar = guitars[req.guitarIndex];
-    return { success: true, data: guitar };
+    const product = guitars[req.guitarIndex];
+    return { product: { ...product, image: `app/Images${product.image}` } };
   }
 
   async updateGuitar(req: Request) {
     // @ts-ignore
     const index = req.guitarIndex;
-    let guitar = guitars[index];
-    guitar = { ...guitar, ...req.body };
-    guitars[index] = guitar;
-    return { success: true, message: 'updated', data: guitar };
+    const guitar = guitars[index];
+    const product = { ...guitar, ...req.body };
+    guitars[index] = product;
+    return { message: 'updated', product };
   }
 
   async deleteGuitar(req: Request) {
     // @ts-ignore
     const guitarIndex = guitars[req.guitarIndex];
     guitars.splice(+guitarIndex, 1);
-    return { success: true, message: 'deleted' };
+    return { message: 'deleted' };
   }
 }

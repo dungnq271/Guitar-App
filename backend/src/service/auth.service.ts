@@ -38,7 +38,7 @@ export class AuthService {
     user.username = username;
     user.email = email;
     user.password = await hashPassword(password);
-    user.profilePicUrl = 'https://localhost:3000/my-pic.png';
+    user.profilePicUrl = '';
 
     this.generateRefreshToken(user);
 
@@ -46,11 +46,10 @@ export class AuthService {
       await this.userRepository.save(user);
     } catch (err) {
       console.log('/auth/register endpoint error', err);
-      res.status(400).json({ success: false, message: 'Error signing up' });
+      res.status(400).json({ message: 'Error signing up' });
     }
 
     res.status(200).json({
-      success: true,
       message: 'User registered successfully'
     });
   }
@@ -85,7 +84,7 @@ export class AuthService {
         const user = await this.userRepository.findOne({ where: { email } });
         if (!user) {
           await limiterSlowBruteByIP.consume(ipAddr);
-          res.status(400).json({ success: false, message: 'Email or password is not correct' });
+          res.status(400).json({ message: 'Email or password is not correct' });
         } else {
           const isValid = await checkPassword(password, user.password);
           if (isValid) {
@@ -100,11 +99,17 @@ export class AuthService {
             }
 
             res.status(200).json({
-              success: true,
               message: 'User login successfully',
               jwt,
               refreshToken,
-              user
+              user: {
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                username: user.username,
+                email: user.email,
+                profilePicUrl: user.profilePicUrl
+              }
             });
           } else {
             // username exists but not logged in
@@ -112,13 +117,13 @@ export class AuthService {
               limiterSlowBruteByIP.consume(ipAddr),
               limiterConsecutiveFailsByUsernameAndIP.consume(usernameIPkey)
             ]);
-            res.status(400).json({ success: false, message: 'Email or password is not correct' });
+            res.status(400).json({ message: 'Email or password is not correct' });
           }
         }
       } catch (err) {
         console.log(err);
         if (err instanceof Error) {
-          res.status(400).json({ success: false, message: 'Error logging in' });
+          res.status(400).json({ message: 'Error logging in' });
         } else {
           res.set('Retry-After', String(Math.round(err.msBeforeNext / 1000)) || '1');
           res.status(429).send('Too Many Requests');
@@ -132,8 +137,7 @@ export class AuthService {
 
     const fingerprintCookie = parse(req.headers.cookie)[FINGERPRINT_COOKIE_NAME];
     console.log({ fingerprintCookie });
-    if (!fingerprintCookie)
-      res.status(400).json({ success: false, message: 'Unable to refresh JWT token' });
+    if (!fingerprintCookie) res.status(400).json({ message: 'Unable to refresh JWT token' });
 
     // Compute a SHA256 hash of the received fingerprint in cookie in order to compare
     // it to the fingerprint hash stored in the token
@@ -141,14 +145,14 @@ export class AuthService {
     console.log({ fingerprintCookie, fingerprintCookieHash, fingerprintHash });
 
     if (fingerprintHash != fingerprintCookieHash) {
-      res.status(400).json({ success: false, message: 'Unable to refresh JWT token' });
+      res.status(400).json({ message: 'Unable to refresh JWT token' });
     }
 
     return this.userRepository
       .findOne({ where: { refreshToken } })
       .then((user) => {
         if (!user) {
-          res.status(400).json({ success: false, message: 'User not found' });
+          res.status(400).json({ message: 'User not found' });
         }
 
         this.generateRefreshToken(user);
@@ -161,11 +165,11 @@ export class AuthService {
             // TODO: why not hashing fingerprint
           }
         });
-        res.status(200).json({ success: true, jwt });
+        res.status(200).json({ jwt });
       })
       .catch((err) => {
         console.log(err);
-        res.status(400).json({ success: false, message: 'Error issuing jwt token refresh' });
+        res.status(400).json({ message: 'Error issuing jwt token refresh' });
       });
   }
 
