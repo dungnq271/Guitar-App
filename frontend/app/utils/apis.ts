@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  baseURL,
   guitarListURL,
   loginURL,
   getUserURL,
@@ -15,7 +16,16 @@ export async function fetchGuitars() {
       'Content-Type': 'application/json'
     }
   });
-  return response.data.data as Guitar[];
+  return response.data.products as Guitar[];
+}
+
+export async function fetchSingleGuitar(id: number) {
+  const response = await axios.get(`${baseURL}/guitar/${id}`, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+  return response.data.product as Guitar;
 }
 
 export async function login(data: object) {

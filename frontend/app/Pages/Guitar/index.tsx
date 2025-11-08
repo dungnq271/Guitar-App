@@ -1,6 +1,6 @@
-import { Link } from 'react-router';
+import { Link, useLoaderData } from 'react-router';
 import type { Route } from './+types/index';
-import { fetchGuitars } from '@/utils/apis';
+import { fetchSingleGuitar } from '@/utils/apis';
 import { type Guitar } from '@/utils/models';
 import { useState } from 'react';
 import './index.css';
@@ -10,17 +10,16 @@ interface ModalProps {
 }
 
 export async function clientLoader({ params }: Route.LoaderArgs) {
-  const guitars = await fetchGuitars();
-  const guitar = guitars.find((guitar) => guitar.id === +params.guitarId);
+  const guitar = await fetchSingleGuitar(+params.guitarId);
   if (!guitar) {
     throw new Error('Guitar not found');
   }
   return guitar;
 }
 
-export default function Guitars({ loaderData }: Route.ComponentProps) {
+export default function Guitar() {
   const [isAddCart, setAddCart] = useState<boolean>(false);
-  const guitar: Guitar = loaderData;
+  const guitar: Guitar = useLoaderData();
 
   return (
     <div id="description-panel">
@@ -58,7 +57,7 @@ function Modal({ isShown }: ModalProps) {
     isShown && (
       <div className="modal-bg">
         <div id="modal">
-          <img src="/app/images/tick_icon.svg" width="1" height="1" />
+          <img src="/app/Images/tick_icon.svg" width="1" height="1" />
           <p>Item added</p>
         </div>
       </div>

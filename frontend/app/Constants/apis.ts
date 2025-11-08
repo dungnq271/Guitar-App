@@ -1,4 +1,4 @@
-const baseURL = import.meta.env.VITE_BACKEND_URL;
+export const baseURL = import.meta.env.VITE_PUBLIC_MOSAIC_BACKEND_URL;
 
 export const guitarListURL = baseURL + '/guitar/list';
 
