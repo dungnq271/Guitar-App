@@ -3,22 +3,12 @@
  * Tests the full checkout process from cart to order confirmation
  */
 
-import { test as base, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { test } from './playwright.setup.js';
 import { setupServer } from 'msw/node';
-import { http } from 'msw';
-import type { MockServiceWorker } from 'playwright-msw';
-import { createWorkerFixture } from 'playwright-msw';
 import { handlers } from './mocks/handlers';
 
 const server = setupServer(...handlers);
-
-const test = base.extend<{
-  worker: MockServiceWorker;
-  http: typeof http;
-}>({
-  worker: createWorkerFixture(handlers),
-  http
-});
 
 test.beforeAll(() => {
   server.listen({ onUnhandledRequest: 'bypass' });
