@@ -20,11 +20,6 @@
 }
 
 body {
-  /* --color-background: #000000; */
-  /* --color-main: #080a17; */
-  /* --color-foreground: #f7f7f7; */
-  /* --color-navbar: #1b1d2f; */
-
   --color-background: #000000;
   --color-main: #0c111c;
   --color-foreground: #f7f7f7;
@@ -72,13 +67,6 @@ body {
   overflow-y: scroll;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    /* --color-background: #121212; */
-    /* --color-foreground: #f7f7f7; */
-  }
-}
-
 a {
   text-decoration: none;
 }
@@ -118,6 +106,7 @@ pre {
 #inner-layout {
   grid-area: 'alias-inner-grid';
   background-color: var(--color-main);
+  height: 100%;
   overflow: hidden;
   border-top-left-radius: 1em;
   border-top-right-radius: 1em;
