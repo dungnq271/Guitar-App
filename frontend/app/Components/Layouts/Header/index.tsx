@@ -29,7 +29,7 @@ export default function Header({ menuRef, isMobile, toggleNavMenu }: HeaderTypes
       )}
       <header>
         <div id="left-header">
-          <h2 id="logo">LOGO</h2>
+          <h2 id="logo">Mosaic</h2>
         </div>
         {
           // TODO: implement search bar

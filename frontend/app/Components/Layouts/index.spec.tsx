@@ -19,7 +19,7 @@ describe('<Layout />', () => {
     // render the app stub at "/"
     render(<Stub initialEntries={['/']} />);
 
-    expect(screen.getByText('LOGO')).toBeInTheDocument();
+    expect(screen.getByText('Mosaic')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'menu' })).toBeInTheDocument();
 
     expect(screen.queryByRole('menu')).not.toBeInTheDocument();
@@ -39,7 +39,7 @@ describe('<Layout />', () => {
     // render the app stub at "/"
     render(<Stub initialEntries={['/']} />);
 
-    expect(screen.getByText('LOGO')).toBeInTheDocument();
+    expect(screen.getByText('Mosaic')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'menu' })).not.toBeInTheDocument();
 
     expect(screen.getByRole('menu')).toBeInTheDocument();
