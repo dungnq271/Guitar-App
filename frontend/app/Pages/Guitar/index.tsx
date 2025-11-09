@@ -5,10 +5,6 @@ import { type Guitar } from '@/utils/models';
 import { useState } from 'react';
 import './index.css';
 
-interface ModalProps {
-  isShown: boolean;
-}
-
 export async function clientLoader({ params }: Route.LoaderArgs) {
   const guitar = await fetchSingleGuitar(+params.guitarId);
   if (!guitar) {
@@ -52,7 +48,11 @@ export default function Guitar() {
   );
 }
 
-function Modal({ isShown }: ModalProps) {
+interface ModalTypes {
+  isShown: boolean;
+}
+
+function Modal({ isShown }: ModalTypes) {
   return (
     isShown && (
       <div className="modal-bg">

@@ -1,7 +1,7 @@
 import { Link, redirect, useLoaderData } from 'react-router';
 import { fetchGuitars } from '../../utils/apis';
+import type { Guitar } from '@/utils/models';
 import './index.css';
-import type { Guitar } from '~/utils/models';
 
 export async function clientLoader() {
   try {
